@@ -56,7 +56,7 @@ const ProductListPage = () => {
               <tr key={product._id} style={{borderBottom: '1px solid var(--border-color)'}}>
                 <td>{product._id}</td>
                 <td>{product.name}</td>
-                <td>${product.price}</td>
+                <td>₹{product.price}</td>
                 <td>{product.category}</td>
                 <td>{product.brand}</td>
                 <td>

@@ -15,7 +15,7 @@ const Product = ({ product }) => {
           <span>⭐ {product.rating}</span>
           <span className="rating-text">({product.numReviews} reviews)</span>
         </div>
-        <div className="product-price">${product.price}</div>
+        <div className="product-price">₹{product.price}</div>
       </div>
     </div>
   );

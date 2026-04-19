@@ -84,7 +84,7 @@ const ProfilePage = () => {
                 <tr key={order._id} style={{borderBottom: '1px solid var(--border-color)'}}>
                   <td>{order._id}</td>
                   <td>{order.createdAt.substring(0, 10)}</td>
-                  <td>${order.totalPrice}</td>
+                  <td>₹{order.totalPrice}</td>
                   <td>{order.isPaid ? order.paidAt.substring(0, 10) : '❌'}</td>
                   <td>{order.isDelivered ? order.deliveredAt.substring(0, 10) : '❌'}</td>
                   <td><Link to={`/order/${order._id}`} className="btn btn-outline">Details</Link></td>

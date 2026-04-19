@@ -129,7 +129,7 @@ const OrderPage = () => {
                     <Link to={`/product/${item.product}`}>{item.name}</Link>
                   </div>
                   <div>
-                    {item.qty} x ${item.price} = ${(item.qty * item.price).toFixed(2)}
+                    {item.qty} x ₹{item.price} = ₹{(item.qty * item.price).toFixed(2)}
                   </div>
                 </div>
               ))}
@@ -144,19 +144,19 @@ const OrderPage = () => {
             </div>
             <div className="list-group-item flex-between">
               <span>Items</span>
-              <span>${order.itemsPrice}</span>
+              <span>₹{order.itemsPrice}</span>
             </div>
             <div className="list-group-item flex-between">
               <span>Shipping</span>
-              <span>${order.shippingPrice}</span>
+              <span>₹{order.shippingPrice}</span>
             </div>
             <div className="list-group-item flex-between">
               <span>Tax</span>
-              <span>${order.taxPrice}</span>
+              <span>₹{order.taxPrice}</span>
             </div>
             <div className="list-group-item flex-between">
               <strong>Total</strong>
-              <strong>${order.totalPrice}</strong>
+              <strong>₹{order.totalPrice}</strong>
             </div>
 
             {!order.isPaid && (

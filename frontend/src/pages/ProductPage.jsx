@@ -42,7 +42,7 @@ const ProductPage = () => {
         <div className="list-group">
           <div className="list-group-item flex-between">
             <span>Price:</span>
-            <strong>${product.price}</strong>
+            <strong>₹{product.price}</strong>
           </div>
           <div className="list-group-item flex-between">
             <span>Status:</span>

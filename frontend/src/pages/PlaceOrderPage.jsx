@@ -88,7 +88,7 @@ const PlaceOrderPage = () => {
                         <Link to={`/product/${item.product}`}>{item.name}</Link>
                       </div>
                       <div>
-                        {item.qty} x ${item.price} = ${(item.qty * item.price).toFixed(2)}
+                        {item.qty} x ₹{item.price} = ₹{(item.qty * item.price).toFixed(2)}
                       </div>
                     </div>
                   ))}
@@ -105,25 +105,25 @@ const PlaceOrderPage = () => {
             </div>
             <div className="list-group-item flex-between">
               <span>Items</span>
-              <span>${cart.itemsPrice}</span>
+              <span>₹{cart.itemsPrice}</span>
             </div>
             <div className="list-group-item flex-between">
               <span>Shipping</span>
-              <span>${cart.shippingPrice}</span>
+              <span>₹{cart.shippingPrice}</span>
             </div>
             <div className="list-group-item flex-between">
               <span>Tax</span>
-              <span>${cart.taxPrice}</span>
+              <span>₹{cart.taxPrice}</span>
             </div>
             {cart.coupon && (
               <div className="list-group-item flex-between" style={{color: 'var(--primary-color)'}}>
                 <span>Discount ({cart.coupon.discountPercentage}%)</span>
-                <span>-${cart.discountAmount}</span>
+                <span>-₹{cart.discountAmount}</span>
               </div>
             )}
             <div className="list-group-item flex-between">
               <strong>Total</strong>
-              <strong>${cart.totalPrice}</strong>
+              <strong>₹{cart.totalPrice}</strong>
             </div>
 
             {!cart.coupon && (
