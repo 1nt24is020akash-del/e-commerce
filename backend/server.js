@@ -10,6 +10,9 @@ import productRoutes from './routes/productRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import couponRoutes from './routes/couponRoutes.js';
+import Product from './models/productModel.js';
+import products from './data/products.js';
+import User from './models/userModel.js';
 
 dotenv.config();
 
@@ -27,6 +30,24 @@ app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/coupons', couponRoutes);
+
+app.get('/api/seed', async (req, res) => {
+  try {
+    await Product.deleteMany();
+    const adminUser = await User.findOne({});
+    if (adminUser) {
+      adminUser.isAdmin = true;
+      await adminUser.save();
+    }
+    const sampleProducts = products.map((product) => {
+      return { ...product, user: adminUser ? adminUser._id : '000000000000000000000000' };
+    });
+    await Product.insertMany(sampleProducts);
+    res.send({ message: 'Database seeded successfully! You can go back to the homepage now.' });
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
 
 app.get('/api/config/razorpay', (req, res) => res.send({ clientId: process.env.RAZORPAY_KEY_ID || 'rzp_test_placeholder' }));
 
