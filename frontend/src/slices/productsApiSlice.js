@@ -3,7 +3,12 @@ import { apiSlice } from './apiSlice';
 export const productsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query({
-      query: (keyword) => ({ url: '/products', params: keyword ? { keyword } : {} }),
+      query: ({ keyword, category } = {}) => {
+        let params = {};
+        if (keyword) params.keyword = keyword;
+        if (category && category !== 'All Items') params.category = category;
+        return { url: '/products', params };
+      },
       providesTags: ['Product'],
       keepUnusedDataFor: 5,
     }),

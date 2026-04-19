@@ -5,7 +5,12 @@ const getProducts = asyncHandler(async (req, res) => {
   const keyword = req.query.keyword && req.query.keyword !== 'undefined'
     ? { name: { $regex: req.query.keyword, $options: 'i' } }
     : {};
-  const products = await Product.find({ ...keyword });
+    
+  const category = req.query.category && req.query.category !== 'All Items' && req.query.category !== 'undefined'
+    ? { category: req.query.category }
+    : {};
+
+  const products = await Product.find({ ...keyword, ...category });
   res.json(products);
 });
 
