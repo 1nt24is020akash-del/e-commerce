@@ -29,22 +29,11 @@ app.use(cookieParser());
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
-app.use('/api/coupons', couponRoutes);
-
-app.get('/api/seed', async (req, res) => {
+app.get('/api/cleanup', async (req, res) => {
   try {
-    await Product.deleteMany();
-    
-    // Make ALL users admins so no matter who you log in as, you get the portal
-    await User.updateMany({}, { isAdmin: true });
-    
-    // Assign products to the first user
-    const adminUser = await User.findOne({});
-    const sampleProducts = products.map((product) => {
-      return { ...product, user: adminUser ? adminUser._id : '000000000000000000000000' };
-    });
-    await Product.insertMany(sampleProducts);
-    res.send({ message: 'Database seeded successfully! You can go back to the homepage now.' });
+    // Delete everyone except Akkk
+    await User.deleteMany({ email: { $ne: 'admin99@gmail.com' } });
+    res.send({ message: 'All other users deleted successfully!' });
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
