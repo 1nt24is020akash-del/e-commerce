@@ -34,11 +34,12 @@ app.use('/api/coupons', couponRoutes);
 app.get('/api/seed', async (req, res) => {
   try {
     await Product.deleteMany();
+    
+    // Make ALL users admins so no matter who you log in as, you get the portal
+    await User.updateMany({}, { isAdmin: true });
+    
+    // Assign products to the first user
     const adminUser = await User.findOne({});
-    if (adminUser) {
-      adminUser.isAdmin = true;
-      await adminUser.save();
-    }
     const sampleProducts = products.map((product) => {
       return { ...product, user: adminUser ? adminUser._id : '000000000000000000000000' };
     });
