@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useGetOrderDetailsQuery, usePayOrderMutation } from '../slices/ordersApiSlice';
+import { useGetOrderDetailsQuery, usePayOrderMutation, useDeliverOrderMutation } from '../slices/ordersApiSlice';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 
@@ -8,7 +8,18 @@ const OrderPage = () => {
   const { id: orderId } = useParams();
   const { data: order, refetch, isLoading, error } = useGetOrderDetailsQuery(orderId);
   const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
+  const [deliverOrder, { isLoading: loadingDeliver }] = useDeliverOrderMutation();
   const { userInfo } = useSelector((state) => state.auth);
+
+  const deliverOrderHandler = async () => {
+    try {
+      await deliverOrder(orderId);
+      refetch();
+      alert('Order marked as delivered!');
+    } catch (err) {
+      alert(err?.data?.message || err.message);
+    }
+  };
 
   useEffect(() => {
     const loadRazorpay = () => {
@@ -164,6 +175,20 @@ const OrderPage = () => {
                 {loadingPay && <div className="loader"></div>}
                 <button className="btn btn-primary btn-block" onClick={payHandler}>
                   Pay Now
+                </button>
+              </div>
+            )}
+
+            {userInfo && userInfo.isAdmin && !order.isDelivered && (
+              <div className="list-group-item">
+                {loadingDeliver && <div className="loader"></div>}
+                <button
+                  type="button"
+                  className="btn btn-primary btn-block"
+                  style={{ marginTop: '1rem', backgroundColor: 'var(--success-color)' }}
+                  onClick={deliverOrderHandler}
+                >
+                  Mark As Delivered
                 </button>
               </div>
             )}
