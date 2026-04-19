@@ -29,6 +29,8 @@ app.use(cookieParser());
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/coupons', couponRoutes);
+
 app.get('/api/cleanup', async (req, res) => {
   try {
     // Delete everyone except Akkk
