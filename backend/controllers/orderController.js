@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import Order from '../models/orderModel.js';
+import Product from '../models/productModel.js';
 import Razorpay from 'razorpay';
 import crypto from 'crypto';
 
@@ -14,6 +15,15 @@ const addOrderItems = asyncHandler(async (req, res) => {
       user: req.user._id, shippingAddress, paymentMethod, itemsPrice, taxPrice, shippingPrice, totalPrice,
     });
     const createdOrder = await order.save();
+
+    for (const item of order.orderItems) {
+      const product = await Product.findById(item.product);
+      if (product) {
+        product.countInStock = product.countInStock - item.qty;
+        await product.save();
+      }
+    }
+
     res.status(201).json(createdOrder);
   }
 });
