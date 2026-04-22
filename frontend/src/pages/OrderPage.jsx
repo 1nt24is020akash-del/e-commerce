@@ -185,7 +185,7 @@ const OrderPage = () => {
                 <div className="alert alert-info" style={{marginBottom: '1rem', textAlign: 'center'}}>
                   <p style={{fontWeight: 'bold', fontSize: '1.1rem'}}>PhonePe / UPI Transfer</p>
                   <p>Please send <strong>₹{order.totalPrice}</strong> to:</p>
-                  <p style={{fontSize: '1.3rem', fontWeight: 'bold', margin: '0.5rem 0', color: 'var(--primary-color)'}}>+91 8660385303</p>
+                  <p style={{fontSize: '1.3rem', fontWeight: 'bold', margin: '0.5rem 0', color: 'var(--primary-color)'}}>8660385303-2@ybl</p>
                   
                   <div style={{ margin: '1rem 0', display: 'flex', justifyContent: 'center' }}>
                     <img 
@@ -195,15 +195,18 @@ const OrderPage = () => {
                     />
                   </div>
                   
-                  <p style={{fontSize: '0.9rem', marginBottom: '1rem'}}>Scan this QR code from another phone, or click the button below on this phone.</p>
+                  <p style={{fontSize: '0.9rem', marginBottom: '0.5rem'}}>PhonePe blocks direct payment links for security. Please <strong>scan the QR code</strong> from another phone, or copy the UPI ID below to pay manually.</p>
                 </div>
-                <a 
-                  href={`upi://pay?pa=8660385303-2@ybl&pn=MERN%20E-Shop&tr=${order._id}&am=${order.totalPrice}&cu=INR`}
+                <button 
+                  onClick={() => {
+                    navigator.clipboard.writeText('8660385303-2@ybl');
+                    alert('UPI ID copied to clipboard!');
+                  }}
                   className="btn btn-primary btn-block" 
-                  style={{ backgroundColor: '#5f259f', borderColor: '#5f259f', display: 'block', textAlign: 'center' }}
+                  style={{ backgroundColor: '#5f259f', borderColor: '#5f259f', display: 'block', width: '100%' }}
                 >
-                  Open PhonePe / UPI App
-                </a>
+                  Copy UPI ID
+                </button>
               </div>
             )}
 
