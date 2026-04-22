@@ -130,4 +130,23 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
   }
 });
 
-export { addOrderItems, getOrderById, updateOrderToPaid, getMyOrders, getOrders, updateOrderToDelivered, createRazorpayOrder };
+const updateOrderToPaidAdmin = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id);
+  if (order) {
+    order.isPaid = true;
+    order.paidAt = Date.now();
+    order.paymentResult = {
+      id: 'manual_admin_verification',
+      status: 'COMPLETED',
+      update_time: Date.now().toString(),
+      email_address: req.user.email,
+    };
+    const updatedOrder = await order.save();
+    res.json(updatedOrder);
+  } else {
+    res.status(404);
+    throw new Error('Order not found');
+  }
+});
+
+export { addOrderItems, getOrderById, updateOrderToPaid, updateOrderToPaidAdmin, getMyOrders, getOrders, updateOrderToDelivered, createRazorpayOrder };

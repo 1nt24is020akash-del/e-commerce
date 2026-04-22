@@ -3,6 +3,7 @@ import {
   addOrderItems,
   getOrderById,
   updateOrderToPaid,
+  updateOrderToPaidAdmin,
   getMyOrders,
   getOrders,
   updateOrderToDelivered,
@@ -17,6 +18,7 @@ router.route('/mine').get(protect, getMyOrders);
 router.route('/:id').get(protect, getOrderById);
 router.route('/:id/razorpay').post(protect, createRazorpayOrder);
 router.route('/:id/pay').put(protect, updateOrderToPaid);
+router.route('/:id/payadmin').put(protect, admin, updateOrderToPaidAdmin);
 router.route('/:id/deliver').put(protect, admin, updateOrderToDelivered);
 
 export default router;

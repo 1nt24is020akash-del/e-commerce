@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useGetOrderDetailsQuery, usePayOrderMutation, useDeliverOrderMutation } from '../slices/ordersApiSlice';
+import { useGetOrderDetailsQuery, usePayOrderMutation, useDeliverOrderMutation, usePayOrderAdminMutation } from '../slices/ordersApiSlice';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 
@@ -9,6 +9,7 @@ const OrderPage = () => {
   const { data: order, refetch, isLoading, error } = useGetOrderDetailsQuery(orderId);
   const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
   const [deliverOrder, { isLoading: loadingDeliver }] = useDeliverOrderMutation();
+  const [payOrderAdmin, { isLoading: loadingPayAdmin }] = usePayOrderAdminMutation();
   const { userInfo } = useSelector((state) => state.auth);
 
   const deliverOrderHandler = async () => {
@@ -18,6 +19,18 @@ const OrderPage = () => {
       alert('Order marked as delivered!');
     } catch (err) {
       alert(err?.data?.message || err.message);
+    }
+  };
+
+  const payOrderAdminHandler = async () => {
+    if (window.confirm('Are you sure you want to mark this order as paid?')) {
+      try {
+        await payOrderAdmin(orderId);
+        refetch();
+        alert('Order marked as paid!');
+      } catch (err) {
+        alert(err?.data?.message || err.message);
+      }
     }
   };
 
@@ -219,13 +232,28 @@ const OrderPage = () => {
               </div>
             )}
 
+            {userInfo && userInfo.isAdmin && !order.isPaid && (
+              <div className="list-group-item" style={{ borderTop: '2px dashed #ddd' }}>
+                <h3 style={{fontSize: '1.1rem', marginBottom: '0.5rem'}}>Admin Controls</h3>
+                {loadingPayAdmin && <div className="loader"></div>}
+                <button
+                  type="button"
+                  className="btn btn-primary btn-block"
+                  style={{ backgroundColor: 'var(--success-color)' }}
+                  onClick={payOrderAdminHandler}
+                >
+                  Mark As Paid (Admin)
+                </button>
+              </div>
+            )}
+
             {userInfo && userInfo.isAdmin && !order.isDelivered && (
               <div className="list-group-item">
                 {loadingDeliver && <div className="loader"></div>}
                 <button
                   type="button"
                   className="btn btn-primary btn-block"
-                  style={{ marginTop: '1rem', backgroundColor: 'var(--success-color)' }}
+                  style={{ backgroundColor: 'var(--success-color)' }}
                   onClick={deliverOrderHandler}
                 >
                   Mark As Delivered
