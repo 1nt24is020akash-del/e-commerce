@@ -74,6 +74,25 @@ app.get('/api/seed-coupons', async (req, res) => {
   }
 });
 
+app.get('/api/seed-all-products', async (req, res) => {
+  try {
+    const adminUser = await User.findOne({ isAdmin: true });
+    if (!adminUser) {
+      return res.status(404).json({ message: 'Admin user not found' });
+    }
+    
+    // Delete existing products to avoid duplicates during seed
+    await Product.deleteMany();
+    
+    const sampleProducts = products.map(p => ({ ...p, user: adminUser._id }));
+    await Product.insertMany(sampleProducts);
+    
+    res.send({ message: 'All products seeded successfully!' });
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
 app.get('/api/config/razorpay', (req, res) => res.send({ clientId: process.env.RAZORPAY_KEY_ID || 'rzp_test_placeholder' }));
 
 const __filename = fileURLToPath(import.meta.url);
