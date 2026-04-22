@@ -5,7 +5,9 @@ const MockPaymentModal = ({ onClose, onSuccess, amount }) => {
   const [cardNumber, setCardNumber] = useState('');
   const [expiry, setExpiry] = useState('');
   const [cvv, setCvv] = useState('');
+  const [mobileNumber, setMobileNumber] = useState('');
   const [otp, setOtp] = useState('');
+  const [generatedOtp, setGeneratedOtp] = useState('');
   const [error, setError] = useState('');
 
   const handleCardSubmit = (e) => {
@@ -14,17 +16,28 @@ const MockPaymentModal = ({ onClose, onSuccess, amount }) => {
       setError('Please enter valid card details (16 digit card, valid expiry, 3 digit CVV)');
       return;
     }
+    if (mobileNumber.length < 10) {
+      setError('Please enter a valid 10-digit mobile number.');
+      return;
+    }
     setError('');
-    // Simulate sending OTP
+    
+    // Generate a random 4 digit OTP
+    const newOtp = Math.floor(1000 + Math.random() * 9000).toString();
+    setGeneratedOtp(newOtp);
+    
+    // Simulate sending SMS via an alert
+    alert(`SIMULATED SMS to ${mobileNumber}:\n\nYour MERN E-Shop OTP for payment of ₹${amount} is: ${newOtp}. Do not share this with anyone.`);
+    
     setStep(2);
   };
 
   const handleOtpSubmit = (e) => {
     e.preventDefault();
-    if (otp === '1234') {
+    if (otp === generatedOtp) {
       onSuccess();
     } else {
-      setError('Invalid OTP. Please enter 1234 to simulate a successful payment.');
+      setError(`Invalid OTP. Please enter the OTP that was sent to your mobile.`);
     }
   };
 
@@ -55,7 +68,7 @@ const MockPaymentModal = ({ onClose, onSuccess, amount }) => {
               />
             </div>
             
-            <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem' }}>
+            <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
               <div className="form-group" style={{ flex: 1 }}>
                 <label>Expiry (MM/YY)</label>
                 <input 
@@ -81,20 +94,33 @@ const MockPaymentModal = ({ onClose, onSuccess, amount }) => {
                 />
               </div>
             </div>
+
+            <div className="form-group" style={{ marginBottom: '1.5rem' }}>
+              <label>Mobile Number (For OTP)</label>
+              <input 
+                type="text" 
+                placeholder="Enter 10 digit mobile number" 
+                maxLength="10"
+                className="form-control"
+                value={mobileNumber}
+                onChange={(e) => setMobileNumber(e.target.value.replace(/\D/g, ''))}
+                required 
+              />
+            </div>
             
             <button type="submit" className="btn btn-primary btn-block" style={{width: '100%'}}>
-              Proceed to Pay
+              Request OTP
             </button>
           </form>
         ) : (
           <form onSubmit={handleOtpSubmit} style={styles.form}>
             <div className="alert alert-success" style={{textAlign: 'center', marginBottom: '1rem'}}>
-              An OTP has been sent to your registered mobile number.
+              An OTP has been sent to +91 {mobileNumber}.
             </div>
             
             <div className="form-group" style={{ marginBottom: '1.5rem', textAlign: 'center' }}>
               <label>Enter OTP</label>
-              <p style={{fontSize: '0.8rem', color: '#666'}}>Hint: Enter 1234 to simulate success</p>
+              <p style={{fontSize: '0.8rem', color: '#666'}}>Please check the simulated SMS alert.</p>
               <input 
                 type="text" 
                 placeholder="XXXX" 
