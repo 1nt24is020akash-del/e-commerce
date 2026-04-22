@@ -193,7 +193,7 @@ const products = [
   },
   {
     name: 'Smartphone',
-    image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&q=80&w=800',
     description: 'Used for calling, messaging, internet, and apps.',
     brand: 'Generic',
     category: 'Electronics',
@@ -204,7 +204,7 @@ const products = [
   },
   {
     name: '📺 Television',
-    image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1593784991095-a205069470b6?auto=format&fit=crop&q=80&w=800',
     description: 'Used for watching news, movies, and shows.',
     brand: 'Generic',
     category: 'Electronics',
@@ -215,7 +215,7 @@ const products = [
   },
   {
     name: '❄️ Refrigerator',
-    image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1571175432270-4824f6d47795?auto=format&fit=crop&q=80&w=800',
     description: 'Keeps food fresh and prevents spoilage.',
     brand: 'Generic',
     category: 'Electronics',
@@ -226,7 +226,7 @@ const products = [
   },
   {
     name: '🧺 Washing Machine',
-    image: 'https://images.unsplash.com/photo-1582735689369-4fe89db7114c?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1610557892470-55d9e80e0b9b?auto=format&fit=crop&q=80&w=800',
     description: 'Helps in washing clothes easily.',
     brand: 'Generic',
     category: 'Electronics',
@@ -248,7 +248,7 @@ const products = [
   },
   {
     name: '🌀 Ceiling Fan',
-    image: 'https://images.unsplash.com/photo-1565152109232-05f32264585c?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1621692176707-1607593c3b7a?auto=format&fit=crop&q=80&w=800',
     description: 'Circulates air to keep rooms cool.',
     brand: 'Generic',
     category: 'Electronics',
@@ -270,7 +270,7 @@ const products = [
   },
   {
     name: '👕 Electric Iron',
-    image: 'https://images.unsplash.com/photo-1603504383454-99882208f975?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&q=80&w=800',
     description: 'Used to remove wrinkles from clothes.',
     brand: 'Generic',
     category: 'Electronics',
@@ -281,7 +281,7 @@ const products = [
   },
   {
     name: '🌬️ Air Conditioner',
-    image: 'https://images.unsplash.com/photo-1585338107529-13afc5f02586?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1631553127988-3482a9339e3b?auto=format&fit=crop&q=80&w=800',
     description: 'Keeps rooms cool in hot weather.',
     brand: 'Generic',
     category: 'Electronics',
