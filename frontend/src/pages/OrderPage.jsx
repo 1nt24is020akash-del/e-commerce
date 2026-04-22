@@ -180,12 +180,19 @@ const OrderPage = () => {
 
             {!order.isPaid && order.paymentMethod === 'PhonePe / QR Code' && (
               <div className="list-group-item">
-                <div className="alert alert-info" style={{marginBottom: 0, textAlign: 'center'}}>
+                <div className="alert alert-info" style={{marginBottom: '1rem', textAlign: 'center'}}>
                   <p style={{fontWeight: 'bold', fontSize: '1.1rem'}}>PhonePe / UPI Transfer</p>
                   <p>Please send <strong>₹{order.totalPrice}</strong> to:</p>
                   <p style={{fontSize: '1.3rem', fontWeight: 'bold', margin: '0.5rem 0', color: 'var(--primary-color)'}}>+91 8660385303</p>
                   <p style={{fontSize: '0.9rem'}}>Your order will be processed once we receive the payment.</p>
                 </div>
+                <a 
+                  href={`upi://pay?pa=8660385303@ybl&pn=Admin&am=${order.totalPrice}&cu=INR`}
+                  className="btn btn-primary btn-block" 
+                  style={{ backgroundColor: '#5f259f', borderColor: '#5f259f', display: 'block', textAlign: 'center' }}
+                >
+                  Open PhonePe / UPI App
+                </a>
               </div>
             )}
 
