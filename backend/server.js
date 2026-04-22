@@ -13,6 +13,8 @@ import couponRoutes from './routes/couponRoutes.js';
 import Product from './models/productModel.js';
 import products from './data/products.js';
 import User from './models/userModel.js';
+import Coupon from './models/couponModel.js';
+import coupons from './data/coupons.js';
 
 dotenv.config();
 
@@ -57,6 +59,16 @@ app.get('/api/seed-products', async (req, res) => {
     } else {
       res.send({ message: 'Snacks & Chats products already exist.' });
     }
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
+app.get('/api/seed-coupons', async (req, res) => {
+  try {
+    await Coupon.deleteMany();
+    await Coupon.insertMany(coupons);
+    res.send({ message: '10 Coupons seeded successfully!' });
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
