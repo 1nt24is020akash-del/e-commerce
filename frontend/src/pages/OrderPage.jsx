@@ -114,7 +114,7 @@ const OrderPage = () => {
               {order.isDelivered ? (
                 <div className="alert alert-success">Delivered on {order.deliveredAt.substring(0, 10)}</div>
               ) : (
-                <div className="alert alert-danger">Not Delivered</div>
+                <div className="alert alert-warning">Pending Delivery</div>
               )}
             </div>
 
@@ -127,7 +127,9 @@ const OrderPage = () => {
               {order.isPaid ? (
                 <div className="alert alert-success">Paid on {order.paidAt.substring(0, 10)}</div>
               ) : (
-                <div className="alert alert-danger">Not Paid</div>
+                <div className="alert alert-warning">
+                  {order.paymentMethod === 'Cash on Delivery' ? 'Cash to be collected on delivery' : 'Pending Payment'}
+                </div>
               )}
             </div>
 
