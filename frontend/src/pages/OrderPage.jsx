@@ -186,10 +186,19 @@ const OrderPage = () => {
                   <p style={{fontWeight: 'bold', fontSize: '1.1rem'}}>PhonePe / UPI Transfer</p>
                   <p>Please send <strong>₹{order.totalPrice}</strong> to:</p>
                   <p style={{fontSize: '1.3rem', fontWeight: 'bold', margin: '0.5rem 0', color: 'var(--primary-color)'}}>+91 8660385303</p>
-                  <p style={{fontSize: '0.9rem'}}>Your order will be processed once we receive the payment.</p>
+                  
+                  <div style={{ margin: '1rem 0', display: 'flex', justifyContent: 'center' }}>
+                    <img 
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(`upi://pay?pa=8660385303-2@ybl&pn=MERN E-Shop&tr=${order._id}&am=${order.totalPrice}&cu=INR`)}`} 
+                      alt="UPI QR Code" 
+                      style={{ border: '2px solid #ccc', borderRadius: '8px', padding: '5px', background: '#fff' }}
+                    />
+                  </div>
+                  
+                  <p style={{fontSize: '0.9rem', marginBottom: '1rem'}}>Scan this QR code from another phone, or click the button below on this phone.</p>
                 </div>
                 <a 
-                  href={`upi://pay?pa=8660385303-2@ybl&pn=Admin&am=${order.totalPrice}&cu=INR`}
+                  href={`upi://pay?pa=8660385303-2@ybl&pn=MERN%20E-Shop&tr=${order._id}&am=${order.totalPrice}&cu=INR`}
                   className="btn btn-primary btn-block" 
                   style={{ backgroundColor: '#5f259f', borderColor: '#5f259f', display: 'block', textAlign: 'center' }}
                 >
