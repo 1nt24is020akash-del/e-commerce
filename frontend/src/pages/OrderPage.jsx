@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useGetOrderDetailsQuery, usePayOrderMutation, useDeliverOrderMutation, usePayOrderAdminMutation } from '../slices/ordersApiSlice';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import MockPaymentModal from '../components/MockPaymentModal';
 
 const OrderPage = () => {
   const { id: orderId } = useParams();
@@ -11,6 +12,8 @@ const OrderPage = () => {
   const [deliverOrder, { isLoading: loadingDeliver }] = useDeliverOrderMutation();
   const [payOrderAdmin, { isLoading: loadingPayAdmin }] = usePayOrderAdminMutation();
   const { userInfo } = useSelector((state) => state.auth);
+  
+  const [showMockPayment, setShowMockPayment] = useState(false);
 
   const deliverOrderHandler = async () => {
     try {
@@ -31,6 +34,17 @@ const OrderPage = () => {
       } catch (err) {
         alert(err?.data?.message || err.message);
       }
+    }
+  };
+
+  const mockPaymentSuccessHandler = async () => {
+    try {
+      await payOrderAdmin(orderId);
+      refetch();
+      setShowMockPayment(false);
+      alert('Payment Successful!');
+    } catch (err) {
+      alert(err?.data?.message || err.message);
     }
   };
 
@@ -226,7 +240,7 @@ const OrderPage = () => {
             {!order.isPaid && (order.paymentMethod === 'ATM Card' || order.paymentMethod === 'Razorpay') && (
               <div className="list-group-item">
                 {loadingPay && <div className="loader"></div>}
-                <button className="btn btn-primary btn-block" onClick={payHandler}>
+                <button className="btn btn-primary btn-block" onClick={() => setShowMockPayment(true)}>
                   Pay with ATM Card
                 </button>
               </div>
@@ -263,6 +277,14 @@ const OrderPage = () => {
           </div>
         </div>
       </div>
+
+      {showMockPayment && (
+        <MockPaymentModal 
+          amount={order.totalPrice} 
+          onClose={() => setShowMockPayment(false)} 
+          onSuccess={mockPaymentSuccessHandler} 
+        />
+      )}
     </>
   );
 };
