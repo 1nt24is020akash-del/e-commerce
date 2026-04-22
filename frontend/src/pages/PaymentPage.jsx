@@ -5,7 +5,7 @@ import { savePaymentMethod } from '../slices/cartSlice';
 import CheckoutSteps from '../components/CheckoutSteps';
 
 const PaymentPage = () => {
-  const [paymentMethod, setPaymentMethod] = useState('Razorpay');
+  const [paymentMethod, setPaymentMethod] = useState('ATM Card');
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,18 +32,42 @@ const PaymentPage = () => {
       <form onSubmit={submitHandler}>
         <div className="form-group">
           <label className="form-label" style={{fontWeight: 'bold'}}>Select Method</label>
-          <div style={{ margin: '1rem 0' }}>
+          <div style={{ margin: '1rem 0', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
               <input
                 type="radio"
                 className="form-check-input"
-                id="Razorpay"
+                id="ATM Card"
                 name="paymentMethod"
-                value="Razorpay"
-                checked={paymentMethod === 'Razorpay'}
+                value="ATM Card"
+                checked={paymentMethod === 'ATM Card'}
                 onChange={(e) => setPaymentMethod(e.target.value)}
               />
-              Razorpay (UPI, Credit/Debit Card, NetBanking)
+              ATM Card (Credit/Debit via Razorpay)
+            </label>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+              <input
+                type="radio"
+                className="form-check-input"
+                id="PhonePe"
+                name="paymentMethod"
+                value="PhonePe / QR Code"
+                checked={paymentMethod === 'PhonePe / QR Code'}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+              />
+              PhonePe / QR Code (Direct Transfer)
+            </label>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+              <input
+                type="radio"
+                className="form-check-input"
+                id="CashOnDelivery"
+                name="paymentMethod"
+                value="Cash on Delivery"
+                checked={paymentMethod === 'Cash on Delivery'}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+              />
+              Cash on Delivery (COD)
             </label>
           </div>
         </div>

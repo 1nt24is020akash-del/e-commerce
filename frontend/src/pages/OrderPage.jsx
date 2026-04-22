@@ -170,11 +170,30 @@ const OrderPage = () => {
               <strong>₹{order.totalPrice}</strong>
             </div>
 
-            {!order.isPaid && (
+            {!order.isPaid && order.paymentMethod === 'Cash on Delivery' && (
+              <div className="list-group-item">
+                <div className="alert alert-info" style={{marginBottom: 0}}>
+                  Payment will be collected upon delivery.
+                </div>
+              </div>
+            )}
+
+            {!order.isPaid && order.paymentMethod === 'PhonePe / QR Code' && (
+              <div className="list-group-item">
+                <div className="alert alert-info" style={{marginBottom: 0, textAlign: 'center'}}>
+                  <p style={{fontWeight: 'bold', fontSize: '1.1rem'}}>PhonePe / UPI Transfer</p>
+                  <p>Please send <strong>₹{order.totalPrice}</strong> to:</p>
+                  <p style={{fontSize: '1.3rem', fontWeight: 'bold', margin: '0.5rem 0', color: 'var(--primary-color)'}}>+91 8660385303</p>
+                  <p style={{fontSize: '0.9rem'}}>Your order will be processed once we receive the payment.</p>
+                </div>
+              </div>
+            )}
+
+            {!order.isPaid && (order.paymentMethod === 'ATM Card' || order.paymentMethod === 'Razorpay') && (
               <div className="list-group-item">
                 {loadingPay && <div className="loader"></div>}
                 <button className="btn btn-primary btn-block" onClick={payHandler}>
-                  Pay Now
+                  Pay with ATM Card
                 </button>
               </div>
             )}
