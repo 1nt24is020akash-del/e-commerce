@@ -189,7 +189,7 @@ const OrderPage = () => {
                   <p style={{fontSize: '0.9rem'}}>Your order will be processed once we receive the payment.</p>
                 </div>
                 <a 
-                  href={`upi://pay?pa=8660385303@ybl&pn=Admin&am=${order.totalPrice}&cu=INR`}
+                  href={`upi://pay?pa=8660385303-2@ybl&pn=Admin&am=${order.totalPrice}&cu=INR`}
                   className="btn btn-primary btn-block" 
                   style={{ backgroundColor: '#5f259f', borderColor: '#5f259f', display: 'block', textAlign: 'center' }}
                 >
