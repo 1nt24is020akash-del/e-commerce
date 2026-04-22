@@ -10,7 +10,13 @@ const getProducts = asyncHandler(async (req, res) => {
     ? { category: req.query.category }
     : {};
 
-  const products = await Product.find({ ...keyword, ...category });
+  let products = await Product.find({ ...keyword, ...category });
+
+  // Shuffle products when displaying all items so they appear nicely mixed
+  if (!req.query.category || req.query.category === 'All Items' || req.query.category === 'undefined') {
+    products = products.sort(() => Math.random() - 0.5);
+  }
+
   res.json(products);
 });
 
