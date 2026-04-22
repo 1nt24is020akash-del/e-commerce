@@ -41,6 +41,27 @@ app.get('/api/cleanup', async (req, res) => {
   }
 });
 
+app.get('/api/seed-products', async (req, res) => {
+  try {
+    const adminUser = await User.findOne({ isAdmin: true });
+    if (!adminUser) {
+      return res.status(404).json({ message: 'Admin user not found' });
+    }
+    const snacksAndChats = products.filter(p => p.category === 'Snacks & Chats');
+    const existingSnacks = await Product.find({ category: 'Snacks & Chats' });
+    
+    if (existingSnacks.length === 0) {
+      const sampleProducts = snacksAndChats.map(p => ({ ...p, user: adminUser._id }));
+      await Product.insertMany(sampleProducts);
+      res.send({ message: 'Snacks & Chats products seeded successfully!' });
+    } else {
+      res.send({ message: 'Snacks & Chats products already exist.' });
+    }
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
 app.get('/api/config/razorpay', (req, res) => res.send({ clientId: process.env.RAZORPAY_KEY_ID || 'rzp_test_placeholder' }));
 
 const __filename = fileURLToPath(import.meta.url);

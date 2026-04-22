@@ -71,6 +71,126 @@ const products = [
     rating: 4,
     numReviews: 12,
   },
+  {
+    name: 'Spicy Samosa (Set of 4)',
+    image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&q=80&w=800',
+    description:
+      'Crispy, golden pastry stuffed with a spicy potato and pea filling. A classic Indian snack perfect for tea time.',
+    brand: 'Haldirams',
+    category: 'Snacks & Chats',
+    price: 4.99,
+    countInStock: 50,
+    rating: 4.8,
+    numReviews: 25,
+  },
+  {
+    name: 'Pani Puri Kit',
+    image: 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?auto=format&fit=crop&q=80&w=800',
+    description:
+      'Everything you need to make delicious, tangy, and spicy Pani Puri at home. Includes crisp puris, tamarind chutney, and spicy mint water paste.',
+    brand: 'Bikanervala',
+    category: 'Snacks & Chats',
+    price: 6.99,
+    countInStock: 30,
+    rating: 4.9,
+    numReviews: 40,
+  },
+  {
+    name: 'Bhel Puri Mix',
+    image: 'https://images.unsplash.com/photo-1596560548464-f010549b84d7?auto=format&fit=crop&q=80&w=800',
+    description:
+      'A savory snack mix made with puffed rice, sev, and tangy tamarind sauce. Just add chopped onions and tomatoes for an authentic taste.',
+    brand: 'Haldirams',
+    category: 'Snacks & Chats',
+    price: 3.49,
+    countInStock: 45,
+    rating: 4.5,
+    numReviews: 18,
+  },
+  {
+    name: 'Aloo Tikki Chaat',
+    image: 'https://images.unsplash.com/photo-1626074964464-c081e624c43a?auto=format&fit=crop&q=80&w=800',
+    description:
+      'Crispy potato patties topped with sweet yogurt, tangy tamarind chutney, and spicy green chutney. A burst of flavors in every bite.',
+    brand: 'Local Delights',
+    category: 'Snacks & Chats',
+    price: 5.99,
+    countInStock: 20,
+    rating: 4.7,
+    numReviews: 22,
+  },
+  {
+    name: 'Papdi Chaat',
+    image: 'https://images.unsplash.com/photo-1626074964464-c081e624c43a?auto=format&fit=crop&q=80&w=800',
+    description:
+      'Crisp fried dough wafers topped with boiled potatoes, chickpeas, yogurt, and a mix of sweet and spicy chutneys.',
+    brand: 'Local Delights',
+    category: 'Snacks & Chats',
+    price: 5.49,
+    countInStock: 25,
+    rating: 4.6,
+    numReviews: 30,
+  },
+  {
+    name: 'Khasta Kachori',
+    image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&q=80&w=800',
+    description:
+      'Deep-fried, flaky pastry filled with a spicy lentil mixture. Serve hot with tamarind chutney.',
+    brand: 'Haldirams',
+    category: 'Snacks & Chats',
+    price: 4.49,
+    countInStock: 40,
+    rating: 4.4,
+    numReviews: 15,
+  },
+  {
+    name: 'Sev Puri',
+    image: 'https://images.unsplash.com/photo-1596560548464-f010549b84d7?auto=format&fit=crop&q=80&w=800',
+    description:
+      'Crispy flat puris loaded with diced potatoes, onions, and three types of chutneys, generously garnished with thin sev.',
+    brand: 'Bombay Sweets',
+    category: 'Snacks & Chats',
+    price: 5.99,
+    countInStock: 35,
+    rating: 4.8,
+    numReviews: 28,
+  },
+  {
+    name: 'Dahi Vada',
+    image: 'https://images.unsplash.com/photo-1626074964464-c081e624c43a?auto=format&fit=crop&q=80&w=800',
+    description:
+      'Soft lentil fritters soaked in creamy, sweet yogurt and topped with roasted cumin powder and sweet tamarind chutney.',
+    brand: 'Bikanervala',
+    category: 'Snacks & Chats',
+    price: 6.49,
+    countInStock: 15,
+    rating: 4.9,
+    numReviews: 50,
+  },
+  {
+    name: 'Mumbai Vada Pav',
+    image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&q=80&w=800',
+    description:
+      'The iconic street food of Mumbai. A spicy potato dumpling deep-fried in chickpea batter, served inside a soft bread bun with dry garlic chutney.',
+    brand: 'Street Eats',
+    category: 'Snacks & Chats',
+    price: 3.99,
+    countInStock: 60,
+    rating: 4.7,
+    numReviews: 65,
+  },
+  {
+    name: 'Spicy Masala Peanuts',
+    image: 'https://images.unsplash.com/photo-1596560548464-f010549b84d7?auto=format&fit=crop&q=80&w=800',
+    description:
+      'Roasted peanuts coated with a spicy and tangy spice mix. The perfect crunchy companion for your beverages.',
+    brand: 'Haldirams',
+    category: 'Snacks & Chats',
+    price: 2.99,
+    countInStock: 100,
+    rating: 4.3,
+    numReviews: 12,
+  }
 ];
 
 export default products;
