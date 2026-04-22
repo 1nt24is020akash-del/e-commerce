@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaShoppingCart, FaUser } from 'react-icons/fa';
+import { FaShoppingCart, FaUser, FaSun, FaMoon } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../slices/authSlice';
 import { useLogoutMutation } from '../slices/usersApiSlice';
+import { useState, useEffect } from 'react';
 import SearchBox from './SearchBox';
 
 const Header = () => {
@@ -12,6 +13,21 @@ const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [logoutApiCall] = useLogoutMutation();
+
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.body.classList.add('dark-theme');
+    } else {
+      document.body.classList.remove('dark-theme');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  };
 
   const logoutHandler = async () => {
     try {
@@ -76,6 +92,16 @@ const Header = () => {
                 </Link>
               </li>
             )}
+            <li>
+              <button 
+                onClick={toggleTheme} 
+                className="nav-item" 
+                style={{ background: 'none', border: 'none', padding: '0', fontSize: '1.2rem' }}
+                title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+              >
+                {theme === 'light' ? <FaMoon /> : <FaSun />}
+              </button>
+            </li>
           </ul>
         </nav>
       </div>

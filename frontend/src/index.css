@@ -34,6 +34,20 @@
   --shadow-glow-strong: 0 10px 30px rgba(139, 92, 246, 0.25);
 }
 
+.dark-theme {
+  --bg-color: #0f172a; /* Deep Slate */
+  --card-bg: rgba(30, 41, 59, 0.7); /* Translucent slate */
+  --card-bg-solid: #1e293b;
+  --card-border: rgba(255, 255, 255, 0.1);
+  --card-border-hover: rgba(99, 102, 241, 0.5);
+  --glass-bg: rgba(15, 23, 42, 0.85);
+  
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  
+  --danger-bg: rgba(225, 29, 72, 0.2);
+}
+
 /* Base Styles & Scrollbar */
 * {
   margin: 0;
@@ -68,6 +82,7 @@ body {
   display: flex;
   flex-direction: column;
   -webkit-font-smoothing: antialiased;
+  transition: background-color var(--transition-speed), color var(--transition-speed);
 }
 
 a {

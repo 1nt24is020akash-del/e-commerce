@@ -149,4 +149,23 @@ const updateOrderToPaidAdmin = asyncHandler(async (req, res) => {
   }
 });
 
-export { addOrderItems, getOrderById, updateOrderToPaid, updateOrderToPaidAdmin, getMyOrders, getOrders, updateOrderToDelivered, createRazorpayOrder };
+const updateOrderToPaidMock = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id);
+  if (order) {
+    order.isPaid = true;
+    order.paidAt = Date.now();
+    order.paymentResult = {
+      id: 'mock_atm_payment',
+      status: 'COMPLETED',
+      update_time: Date.now().toString(),
+      email_address: req.user.email,
+    };
+    const updatedOrder = await order.save();
+    res.json(updatedOrder);
+  } else {
+    res.status(404);
+    throw new Error('Order not found');
+  }
+});
+
+export { addOrderItems, getOrderById, updateOrderToPaid, updateOrderToPaidAdmin, updateOrderToPaidMock, getMyOrders, getOrders, updateOrderToDelivered, createRazorpayOrder };
