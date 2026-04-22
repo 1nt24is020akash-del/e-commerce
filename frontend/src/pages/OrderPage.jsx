@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useGetOrderDetailsQuery, usePayOrderMutation, useDeliverOrderMutation, usePayOrderAdminMutation } from '../slices/ordersApiSlice';
+import { useGetOrderDetailsQuery, usePayOrderMutation, useDeliverOrderMutation, usePayOrderAdminMutation, usePayOrderMockMutation } from '../slices/ordersApiSlice';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import MockPaymentModal from '../components/MockPaymentModal';
@@ -11,6 +11,7 @@ const OrderPage = () => {
   const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
   const [deliverOrder, { isLoading: loadingDeliver }] = useDeliverOrderMutation();
   const [payOrderAdmin, { isLoading: loadingPayAdmin }] = usePayOrderAdminMutation();
+  const [payOrderMock, { isLoading: loadingPayMock }] = usePayOrderMockMutation();
   const { userInfo } = useSelector((state) => state.auth);
   
   const [showMockPayment, setShowMockPayment] = useState(false);
@@ -39,7 +40,7 @@ const OrderPage = () => {
 
   const mockPaymentSuccessHandler = async () => {
     try {
-      await payOrderAdmin(orderId);
+      await payOrderMock(orderId);
       refetch();
       setShowMockPayment(false);
       alert('Payment Successful!');
@@ -239,7 +240,7 @@ const OrderPage = () => {
 
             {!order.isPaid && (order.paymentMethod === 'ATM Card' || order.paymentMethod === 'Razorpay') && (
               <div className="list-group-item">
-                {loadingPay && <div className="loader"></div>}
+                {(loadingPay || loadingPayMock) && <div className="loader"></div>}
                 <button className="btn btn-primary btn-block" onClick={() => setShowMockPayment(true)}>
                   Pay with ATM Card
                 </button>
