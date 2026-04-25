@@ -1097,18 +1097,54 @@ footer {
   background: white;
 }
 
-.ql-container.ql-snow {
-  border: none !important;
-  min-height: 300px;
-  font-size: 1rem;
-  color: #333;
+.fake-toolbar {
+  background: #f8f9fa;
+  border-bottom: 1px solid #eee;
+  padding: 0.5rem 2rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 }
 
-.ql-toolbar.ql-snow {
-  border: none !important;
-  border-bottom: 1px solid #eee !important;
-  background: #f8f9fa;
-  padding: 0.5rem 2rem !important;
+.fake-toolbar button {
+  background: none;
+  border: none;
+  color: #5f6368;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fake-toolbar button:hover {
+  background: #e8eaed;
+  color: #202124;
+}
+
+.fake-toolbar .divider {
+  width: 1px;
+  height: 20px;
+  background: #dadce0;
+  margin: 0 0.5rem;
+}
+
+.styled-textarea {
+  width: 100%;
+  border: none;
+  padding: 1.5rem 2rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #333;
+  resize: vertical;
+  min-height: 300px;
+  font-family: inherit;
+}
+
+.styled-textarea:focus {
+  outline: none;
 }
 
 .actions-bar {

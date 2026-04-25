@@ -1,26 +1,10 @@
-import React, { useState } from 'react';
 import { useSendBroadcastEmailMutation } from '../../slices/usersApiSlice';
 import toast from 'react-hot-toast';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import { FaTrash } from 'react-icons/fa';
+import { FaTrash, FaImage, FaLink, FaVideo, FaBold, FaItalic, FaListUl } from 'react-icons/fa';
 
 const AdminBroadcastPage = () => {
-  console.log('AdminBroadcastPage: Rendering...');
-  
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
-  const [hasError, setHasError] = useState(false);
-
-  // Error boundary logic within component
-  React.useEffect(() => {
-    const handleError = (error) => {
-      console.error('AdminBroadcastPage Error:', error);
-      setHasError(true);
-    };
-    window.addEventListener('error', handleError);
-    return () => window.removeEventListener('error', handleError);
-  }, []);
 
   const [sendEmail, { isLoading }] = useSendBroadcastEmailMutation();
 
@@ -61,16 +45,6 @@ const AdminBroadcastPage = () => {
     }
   };
 
-  if (hasError) {
-    return (
-      <div style={{ padding: '2rem', textAlign: 'center' }}>
-        <h1>Oops! Something went wrong.</h1>
-        <p>The email editor failed to load. Please try refreshing the page.</p>
-        <button className="btn btn-primary" onClick={() => window.location.reload()}>Refresh Page</button>
-      </div>
-    );
-  }
-
   return (
     <div className="broadcast-page">
       <h1>Broadcast Email to Users</h1>
@@ -88,15 +62,24 @@ const AdminBroadcastPage = () => {
         </div>
 
         <div className="form-group">
-          <label>Email Body</label>
+          <label>Email Body (HTML supported)</label>
+          <div className="fake-toolbar">
+            <button type="button" title="Bold"><FaBold /></button>
+            <button type="button" title="Italic"><FaItalic /></button>
+            <button type="button" title="List"><FaListUl /></button>
+            <span className="divider"></span>
+            <button type="button" title="Link"><FaLink /></button>
+            <button type="button" title="Image"><FaImage /></button>
+            <button type="button" title="Video"><FaVideo /></button>
+          </div>
           <div className="editor-wrapper">
-            <ReactQuill 
-              theme="snow" 
+            <textarea 
               value={message} 
-              onChange={setMessage} 
-              modules={modules}
-              placeholder="Write your email here..."
-            />
+              onChange={(e) => setMessage(e.target.value)} 
+              placeholder="Write your email here... You can use HTML like <b>, <img>, etc."
+              rows="12"
+              className="styled-textarea"
+            ></textarea>
           </div>
         </div>
 
