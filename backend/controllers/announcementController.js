@@ -1,5 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import Announcement from '../models/announcementModel.js';
+import User from '../models/userModel.js';
+import sendEmail from '../utils/sendEmail.js';
 
 // @desc    Get latest active announcement
 // @route   GET /api/announcements
@@ -23,6 +25,36 @@ const createAnnouncement = asyncHandler(async (req, res) => {
     isActive: true,
     author: req.user._id,
   });
+
+  // Emit socket event for real-time notification
+  const io = req.app.get('socketio');
+  io.emit('newAnnouncement', { message });
+
+  // Send Email to all users
+  const users = await User.find({});
+  if (users.length > 0) {
+    for (const user of users) {
+      try {
+        await sendEmail({
+          email: user.email,
+          subject: 'New Update from MERN E-Shop!',
+          message: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px; border-radius: 10px;">
+              <h2 style="color: #6366f1;">📢 New Announcement!</h2>
+              <p style="font-size: 1.1rem; line-height: 1.6;">${message}</p>
+              <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+              <p style="font-size: 0.8rem; color: #888; text-align: center;">Check out the latest offers on our website.</p>
+              <div style="text-align: center; margin-top: 20px;">
+                <a href="https://e-commerce-o2zc.onrender.com" style="background: #6366f1; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Visit Store</a>
+              </div>
+            </div>
+          `,
+        });
+      } catch (error) {
+        console.error(`Announcement email failed for ${user.email}:`, error);
+      }
+    }
+  }
 
   res.status(201).json(announcement);
 });

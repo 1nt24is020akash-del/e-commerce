@@ -31,9 +31,24 @@ const App = () => {
   const { userInfo } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (userInfo && userInfo.isAdmin) {
-      const socket = io();
+    const socket = io();
 
+    socket.on('newAnnouncement', (data) => {
+      toast.success(data.message, {
+        duration: 8000,
+        position: 'top-center',
+        icon: '📢',
+        style: {
+          background: 'linear-gradient(90deg, #6366f1, #a855f7)',
+          color: 'white',
+          fontWeight: 'bold',
+          borderRadius: '30px',
+          padding: '12px 24px',
+        }
+      });
+    });
+
+    if (userInfo && userInfo.isAdmin) {
       socket.on('paymentNotification', (data) => {
         toast((t) => (
           <span style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -94,7 +109,9 @@ const App = () => {
       });
 
       return () => {
+        socket.off('newAnnouncement');
         socket.off('paymentNotification');
+        socket.off('newOrderNotification');
         socket.disconnect();
       };
     }
