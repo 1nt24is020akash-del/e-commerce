@@ -34,16 +34,25 @@ const App = () => {
     const socket = io();
 
     socket.on('newAnnouncement', (data) => {
+      // Play notification sound
+      const audio = new Audio('/sounds/notification.mp3');
+      audio.play().catch(e => console.log('Audio play failed'));
+
       toast.success(data.message, {
-        duration: 8000,
+        duration: 5000,
         position: 'top-center',
         icon: '📢',
         style: {
-          background: 'linear-gradient(90deg, #6366f1, #a855f7)',
+          background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
           color: 'white',
           fontWeight: 'bold',
-          borderRadius: '30px',
-          padding: '12px 24px',
+          borderRadius: '20px',
+          padding: '24px 40px',
+          fontSize: '1.4rem',
+          boxShadow: '0 15px 35px rgba(0,0,0,0.3)',
+          border: '2px solid rgba(255,255,255,0.2)',
+          maxWidth: '800px',
+          animation: 'announcementPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
         }
       });
     });
