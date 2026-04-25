@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import Product from '../components/Product';
+import BannerCarousel from '../components/BannerCarousel';
 import { useGetProductsQuery } from '../slices/productsApiSlice';
 
 const categories = [
@@ -32,21 +33,24 @@ const HomePage = () => {
   return (
     <>
       {!keyword && (
-        <div className="category-tabs">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              className={`tab-button ${category === cat ? 'active' : ''}`}
-              onClick={() => handleCategoryClick(cat)}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
+        <>
+          <BannerCarousel />
+          <div className="category-tabs">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                className={`tab-button ${category === cat ? 'active' : ''}`}
+                onClick={() => handleCategoryClick(cat)}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </>
       )}
       
       {keyword && <a href="/" className="btn btn-outline" style={{marginBottom: '1.5rem', display: 'inline-block'}}>Go Back</a>}
-      <h1>{keyword ? `Search Results for "${keyword}"` : 'Latest Products'}</h1>
+      <h1 style={{ marginTop: keyword ? '0' : '1rem' }}>{keyword ? `Search Results for "${keyword}"` : 'Latest Products'}</h1>
       
       {isLoading ? (
         <div className="loader"></div>
