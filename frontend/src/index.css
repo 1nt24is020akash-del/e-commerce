@@ -1276,10 +1276,10 @@ footer {
   gap: 0.3rem;
   margin-bottom: 1rem;
   padding: 0.8rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.03);
   border-radius: 10px;
   font-size: 0.75rem;
-  color: #ccc;
+  color: #666;
 }
 
 .query-info span {
@@ -1291,11 +1291,11 @@ footer {
 .query-form-container input,
 .query-form-container textarea {
   width: 100%;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   padding: 0.7rem;
-  color: #fff;
+  color: #333;
   margin-bottom: 0.8rem;
   outline: none;
   transition: border 0.2s;
@@ -1304,7 +1304,7 @@ footer {
 
 .query-form-container input:focus,
 .query-form-container textarea:focus {
-  border-color: rgba(255, 255, 255, 0.3);
+  border-color: var(--primary-color);
 }
 
 .query-form-container .btn-primary {
