@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, EffectFade } from 'swiper/modules';
-import ReactPlayer from 'react-player/youtube';
+import ReactPlayer from 'react-player';
 
 // Import Swiper styles
 import 'swiper/css';
