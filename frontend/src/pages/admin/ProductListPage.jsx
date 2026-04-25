@@ -58,33 +58,66 @@ const ProductListPage = () => {
       {loadingDelete && <div className="loader"></div>}
 
       {isLoading ? <div className="loader"></div> : error ? <div className="alert alert-danger">{error.data?.message}</div> : (
-        <table style={{width: '100%', textAlign: 'left', borderCollapse: 'collapse'}}>
-          <thead>
-            <tr style={{borderBottom: '1px solid var(--border-color)'}}>
-              <th>ID</th>
-              <th>NAME</th>
-              <th>PRICE</th>
-              <th>CATEGORY</th>
-              <th>BRAND</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((product) => (
-              <tr key={product._id} style={{borderBottom: '1px solid var(--border-color)'}}>
-                <td>{product._id}</td>
-                <td>{product.name}</td>
-                <td>₹{product.price}</td>
-                <td>{product.category}</td>
-                <td>{product.brand}</td>
-                <td>
-                  <Link to={`/admin/product/${product._id}/edit`} className="btn btn-outline" style={{marginRight: '0.5rem'}}>Edit</Link>
-                  <button className="btn btn-outline" onClick={() => deleteHandler(product._id)}>Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="product-admin-sections">
+          {Object.entries(
+            products.reduce((acc, product) => {
+              const category = product.category || 'Other';
+              if (!acc[category]) acc[category] = [];
+              acc[category].push(product);
+              return acc;
+            }, {})
+          ).map(([category, categoryProducts]) => (
+            <div key={category} className="category-section card-glass" style={{marginBottom: '3rem', padding: '1.5rem', borderRadius: '15px'}}>
+              <h2 style={{
+                marginBottom: '1.5rem', 
+                color: 'var(--primary-color)', 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '0.75rem',
+                borderBottom: '2px solid rgba(255,255,255,0.1)',
+                paddingBottom: '0.5rem'
+              }}>
+                {category === 'Fruits' ? '🍎' : category === 'Vegetables' ? '🥦' : category === 'Snacks & Chats' ? '🍿' : category === 'Electronics' ? '💻' : '📦'} {category} 
+                <span style={{fontSize: '1rem', fontWeight: 'normal', color: 'var(--text-secondary)'}}>({categoryProducts.length} items)</span>
+              </h2>
+              <div style={{overflowX: 'auto'}}>
+                <table style={{width: '100%', textAlign: 'left', borderCollapse: 'collapse'}}>
+                  <thead>
+                    <tr style={{borderBottom: '1px solid var(--border-color)', color: 'var(--text-secondary)', fontSize: '0.9rem'}}>
+                      <th style={{padding: '1rem 0.5rem'}}>ID</th>
+                      <th style={{padding: '1rem 0.5rem'}}>NAME</th>
+                      <th style={{padding: '1rem 0.5rem'}}>PRICE</th>
+                      <th style={{padding: '1rem 0.5rem'}}>BRAND</th>
+                      <th style={{padding: '1rem 0.5rem'}}>STOCK</th>
+                      <th style={{padding: '1rem 0.5rem'}}>ACTIONS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {categoryProducts.map((product) => (
+                      <tr key={product._id} style={{borderBottom: '1px solid rgba(255,255,255,0.05)'}}>
+                        <td style={{padding: '1rem 0.5rem', fontSize: '0.8rem', color: 'var(--text-secondary)'}}>{product._id.substring(0, 8)}...</td>
+                        <td style={{padding: '1rem 0.5rem', fontWeight: '500'}}>{product.name}</td>
+                        <td style={{padding: '1rem 0.5rem'}}>₹{product.price}</td>
+                        <td style={{padding: '1rem 0.5rem'}}>{product.brand}</td>
+                        <td style={{padding: '1rem 0.5rem'}}>
+                          <span className={product.countInStock > 0 ? 'text-success' : 'text-danger'}>
+                            {product.countInStock}
+                          </span>
+                        </td>
+                        <td style={{padding: '1rem 0.5rem'}}>
+                          <div style={{display: 'flex', gap: '0.5rem'}}>
+                            <Link to={`/admin/product/${product._id}/edit`} className="btn btn-outline btn-sm">Edit</Link>
+                            <button className="btn btn-outline btn-sm" onClick={() => deleteHandler(product._id)}>Delete</button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ))}
+        </div>
       )}
     </>
   );
