@@ -1,6 +1,8 @@
 import asyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
+import Coupon from '../models/couponModel.js';
 import generateToken from '../utils/generateToken.js';
+import sendEmail from '../utils/sendEmail.js';
 
 // @desc    Auth user & get token
 const authUser = asyncHandler(async (req, res) => {
@@ -29,6 +31,41 @@ const registerUser = asyncHandler(async (req, res) => {
   const user = await User.create({ name, email, password });
 
   if (user) {
+    // Create Welcome Coupon if it doesn't exist
+    const welcomeCoupon = await Coupon.findOne({ code: 'WELCOME20' });
+    if (!welcomeCoupon) {
+      await Coupon.create({
+        code: 'WELCOME20',
+        discountPercentage: 20,
+        isFirstUserOnly: true,
+        isActive: true,
+        expiryDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)), // 1 year expiry
+      });
+    }
+
+    // Send Welcome Email
+    try {
+      await sendEmail({
+        email: user.email,
+        subject: 'Welcome to MERN E-Shop!',
+        message: `
+          <h1>Welcome, ${user.name}!</h1>
+          <p>We're thrilled to have you join our community at <strong>MERN E-Shop</strong>.</p>
+          <p>Explore our wide range of products from Fresh Groceries to the Latest Electronics.</p>
+          <div style="background: #f4f4f4; padding: 20px; border-radius: 10px; margin: 20px 0; text-align: center;">
+            <h2>Your Welcome Gift</h2>
+            <p>Use the coupon code below for <strong>20% OFF</strong> on your first order!</p>
+            <h1 style="color: #6366f1; letter-spacing: 5px;">WELCOME20</h1>
+          </div>
+          <p>Happy Shopping!</p>
+          <p>Best Regards,<br>The MERN E-Shop Team</p>
+        `,
+      });
+    } catch (emailError) {
+      console.error('Email sending failed:', emailError);
+      // Don't throw error here to allow user registration to succeed
+    }
+
     generateToken(res, user._id);
     res.status(201).json({ _id: user._id, name: user.name, email: user.email, isAdmin: user.isAdmin });
   } else {
