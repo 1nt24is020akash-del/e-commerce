@@ -29,7 +29,7 @@ const CategoryNav = () => {
         {categories.map((cat) => (
           <Link 
             key={cat.name} 
-            to={`/search/category/${cat.name}`} 
+            to={`/?category=${cat.name}`} 
             className="cat-item"
           >
             <div className="cat-icon" style={{ color: cat.color }}>
