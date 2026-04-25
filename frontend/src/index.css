@@ -1216,19 +1216,103 @@ footer {
 }
 
 .chat-header {
-  padding: 1rem 1.5rem;
-  background: var(--primary-color);
-  color: white;
+  padding: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--primary-color);
+  color: white;
 }
 
-.chat-header button {
+.chat-tabs {
+  display: flex;
+  gap: 0.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.25rem;
+  border-radius: 30px;
+}
+
+.chat-tabs button {
   background: none;
   border: none;
-  color: white;
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 25px;
+  font-size: 0.8rem;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all 0.2s;
+  opacity: 0.6;
+}
+
+.chat-tabs button.active {
+  background: rgba(255, 255, 255, 0.2);
+  opacity: 1;
+  font-weight: 600;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.query-form-container {
+  padding: 1.2rem;
+  height: 400px;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.query-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 1rem;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  font-size: 0.75rem;
+  color: #ccc;
+}
+
+.query-info span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.query-form-container input,
+.query-form-container textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 0.7rem;
+  color: #fff;
+  margin-bottom: 0.8rem;
+  outline: none;
+  transition: border 0.2s;
+  font-size: 0.9rem;
+}
+
+.query-form-container input:focus,
+.query-form-container textarea:focus {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.query-form-container .btn-primary {
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 10px;
+  font-weight: 600;
+  margin-top: 0.5rem;
 }
 
 .chat-messages {
