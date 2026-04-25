@@ -1276,10 +1276,10 @@ footer {
   gap: 0.3rem;
   margin-bottom: 1rem;
   padding: 0.8rem;
-  background: rgba(0, 0, 0, 0.03);
+  background: rgba(128, 128, 128, 0.05);
   border-radius: 10px;
   font-size: 0.75rem;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .query-info span {
@@ -1291,20 +1291,21 @@ footer {
 .query-form-container input,
 .query-form-container textarea {
   width: 100%;
-  background: rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: var(--bg-color);
+  border: 1px solid var(--card-border);
   border-radius: 10px;
   padding: 0.7rem;
-  color: #333;
+  color: var(--text-primary);
   margin-bottom: 0.8rem;
   outline: none;
-  transition: border 0.2s;
+  transition: all 0.2s;
   font-size: 0.9rem;
 }
 
 .query-form-container input:focus,
 .query-form-container textarea:focus {
   border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--primary-glow);
 }
 
 .query-form-container .btn-primary {
