@@ -10,25 +10,36 @@ import 'swiper/css/effect-fade';
 const BannerCarousel = () => {
   const banners = [
     {
+      id: 0,
+      type: 'video',
+      video: 'https://videos.pexels.com/video-files/4446905/4446905-uhd_2560_1440_25fps.mp4',
+      title: 'Experience Modern Shopping',
+      subtitle: 'Fast, Reliable, and Premium'
+    },
+    {
       id: 1,
+      type: 'image',
       image: '/images/offer1.png',
       title: 'Summer Sale',
       subtitle: 'Up to 50% Off'
     },
     {
       id: 2,
+      type: 'image',
       image: '/images/offer2.png',
       title: 'Electronics Extravaganza',
       subtitle: 'Best Prices Guaranteed'
     },
     {
       id: 3,
+      type: 'image',
       image: '/images/offer3.png',
       title: 'Fresh From Farm',
       subtitle: '20% Off on Groceries'
     },
     {
       id: 4,
+      type: 'image',
       image: '/images/offer4.png',
       title: 'New Arrivals',
       subtitle: 'Elevate Your Style'
@@ -43,7 +54,7 @@ const BannerCarousel = () => {
         spaceBetween={0}
         slidesPerView={1}
         autoplay={{
-          delay: 4000,
+          delay: 5000,
           disableOnInteraction: false,
         }}
         pagination={{
@@ -56,7 +67,18 @@ const BannerCarousel = () => {
         {banners.map((banner) => (
           <SwiperSlide key={banner.id}>
             <div className="banner-slide">
-              <img src={banner.image} alt={banner.title} className="banner-image" />
+              {banner.type === 'video' ? (
+                <video 
+                  src={banner.video} 
+                  autoPlay 
+                  loop 
+                  muted 
+                  playsInline
+                  className="banner-video"
+                />
+              ) : (
+                <img src={banner.image} alt={banner.title} className="banner-image" />
+              )}
               <div className="banner-overlay">
                 <div className="banner-content">
                   <h2 className="banner-title">{banner.title}</h2>
