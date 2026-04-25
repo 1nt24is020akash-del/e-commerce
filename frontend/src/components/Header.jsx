@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaShoppingCart, FaUser, FaSun, FaMoon } from 'react-icons/fa';
+import { FaShoppingCart, FaUser, FaSun, FaMoon, FaChevronDown, FaStore, FaBell, FaDownload } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../slices/authSlice';
 import { useLogoutMutation } from '../slices/usersApiSlice';
@@ -54,52 +54,65 @@ const Header = () => {
           )}
           <SearchBox />
         </div>
-        <nav>
-          <ul className="nav-links">
-            <li>
-              <Link to="/cart" className="nav-item">
-                <FaShoppingCart /> Cart
-                {cartItems.length > 0 && (
-                  <span className="badge">
-                    {cartItems.reduce((a, c) => a + c.qty, 0)}
-                  </span>
-                )}
-              </Link>
-            </li>
+        <nav style={{ flexShrink: 0 }}>
+          <ul className="nav-links" style={{ gap: '2rem', alignItems: 'center' }}>
             {userInfo ? (
-              <>
-                <li style={{ position: 'relative' }}>
-                  <Link to="/profile" className="nav-item">
-                    <FaUser /> {userInfo.name}
-                  </Link>
-                </li>
-                <li>
-                  <button onClick={logoutHandler} className="btn btn-outline" style={{padding: '0.4rem 0.8rem'}}>
-                    Logout
-                  </button>
-                </li>
-                {userInfo.isAdmin && (
-                  <li style={{display: 'flex', gap: '1rem', marginLeft: '1rem', borderLeft: '1px solid var(--border-color)', paddingLeft: '1rem'}}>
-                    <Link to="/admin/productlist" className="nav-item" style={{color: 'var(--primary-color)'}}>Products</Link>
-                    <Link to="/admin/userlist" className="nav-item" style={{color: 'var(--primary-color)'}}>Users</Link>
-                    <Link to="/admin/orderlist" className="nav-item" style={{color: 'var(--primary-color)'}}>Orders</Link>
-                    <Link to="/admin/supportlist" className="nav-item" style={{color: 'var(--primary-color)'}}>Support</Link>
-                    <Link to="/admin/chat" className="nav-item" style={{color: 'var(--primary-color)'}}>Chat</Link>
-                  </li>
-                )}
-              </>
+              <li className="nav-dropdown-wrapper">
+                <div className="nav-item-flex">
+                  <FaUser style={{ fontSize: '1.2rem', color: 'var(--text-secondary)' }} />
+                  <span style={{ fontWeight: '500', color: '#333' }}>{userInfo.name.split(' ')[0]}</span>
+                  <FaChevronDown style={{ fontSize: '0.7rem', color: '#666' }} />
+                </div>
+                <div className="nav-dropdown-menu card-glass">
+                  <Link to="/profile">My Profile</Link>
+                  {userInfo.isAdmin && (
+                    <>
+                      <Link to="/admin/productlist">Dashboard</Link>
+                      <Link to="/admin/orderlist">Orders</Link>
+                      <Link to="/admin/supportlist">Support</Link>
+                    </>
+                  )}
+                  <button onClick={logoutHandler}>Logout</button>
+                </div>
+              </li>
             ) : (
               <li>
-                <Link to="/login" className="nav-item">
-                  <FaUser /> Sign In
+                <Link to="/login" className="nav-item-flex" style={{ color: '#2874f0', fontWeight: '600' }}>
+                  <FaUser /> Login
                 </Link>
               </li>
             )}
+
+            <li className="nav-dropdown-wrapper">
+              <div className="nav-item-flex">
+                <span style={{ fontWeight: '500', color: '#333' }}>More</span>
+                <FaChevronDown style={{ fontSize: '0.7rem', color: '#666' }} />
+              </div>
+              <div className="nav-dropdown-menu card-glass">
+                <Link to="/contact"><FaBell /> Notifications</Link>
+                <Link to="/support"><FaStore /> Sell on MERN</Link>
+                <Link to="/download"><FaDownload /> Download App</Link>
+              </div>
+            </li>
+
+            <li>
+              <Link to="/cart" className="nav-item-flex" style={{ position: 'relative' }}>
+                <div style={{ position: 'relative' }}>
+                  <FaShoppingCart style={{ fontSize: '1.4rem', color: '#333' }} />
+                  {cartItems.length > 0 && (
+                    <span className="cart-badge-flipkart">
+                      {cartItems.reduce((a, c) => a + c.qty, 0)}
+                    </span>
+                  )}
+                </div>
+                <span style={{ fontWeight: '500', color: '#333' }}>Cart</span>
+              </Link>
+            </li>
+
             <li>
               <button 
                 onClick={toggleTheme} 
-                className="nav-item" 
-                style={{ background: 'none', border: 'none', padding: '0', fontSize: '1.2rem' }}
+                className="theme-toggle-btn"
                 title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
               >
                 {theme === 'light' ? <FaMoon /> : <FaSun />}

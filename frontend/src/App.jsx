@@ -8,6 +8,7 @@ import Footer from './components/Footer';
 import SupportBox from './components/SupportBox';
 import AnnouncementBar from './components/AnnouncementBar';
 import ChatWidget from './components/ChatWidget';
+import CategoryNav from './components/CategoryNav';
 import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
 import CartPage from './pages/CartPage';
@@ -131,6 +132,7 @@ const App = () => {
       <Toaster />
       <AnnouncementBar />
       <Header />
+      <CategoryNav />
       <main className="main-content container">
         <Routes>
           <Route path="/" element={<HomePage />} />
