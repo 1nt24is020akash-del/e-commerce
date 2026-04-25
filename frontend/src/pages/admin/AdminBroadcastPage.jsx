@@ -6,8 +6,21 @@ import 'react-quill/dist/quill.snow.css';
 import { FaTrash } from 'react-icons/fa';
 
 const AdminBroadcastPage = () => {
+  console.log('AdminBroadcastPage: Rendering...');
+  
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
+  const [hasError, setHasError] = useState(false);
+
+  // Error boundary logic within component
+  React.useEffect(() => {
+    const handleError = (error) => {
+      console.error('AdminBroadcastPage Error:', error);
+      setHasError(true);
+    };
+    window.addEventListener('error', handleError);
+    return () => window.removeEventListener('error', handleError);
+  }, []);
 
   const [sendEmail, { isLoading }] = useSendBroadcastEmailMutation();
 
@@ -47,6 +60,16 @@ const AdminBroadcastPage = () => {
       }
     }
   };
+
+  if (hasError) {
+    return (
+      <div style={{ padding: '2rem', textAlign: 'center' }}>
+        <h1>Oops! Something went wrong.</h1>
+        <p>The email editor failed to load. Please try refreshing the page.</p>
+        <button className="btn btn-primary" onClick={() => window.location.reload()}>Refresh Page</button>
+      </div>
+    );
+  }
 
   return (
     <div className="broadcast-page">
