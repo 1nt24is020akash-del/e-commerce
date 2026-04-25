@@ -6,6 +6,8 @@ import toast, { Toaster } from 'react-hot-toast';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import SupportBox from './components/SupportBox';
+import AnnouncementBar from './components/AnnouncementBar';
+import ChatWidget from './components/ChatWidget';
 import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
 import CartPage from './pages/CartPage';
@@ -23,6 +25,7 @@ import ProductEditPage from './pages/admin/ProductEditPage';
 import UserListPage from './pages/admin/UserListPage';
 import OrderListPage from './pages/admin/OrderListPage';
 import SupportListPage from './pages/admin/SupportListPage';
+import AdminChatPage from './pages/admin/AdminChatPage';
 
 const App = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -100,6 +103,7 @@ const App = () => {
   return (
     <>
       <Toaster />
+      <AnnouncementBar />
       <Header />
       <main className="main-content container">
         <Routes>
@@ -124,11 +128,13 @@ const App = () => {
             <Route path="/admin/userlist" element={<UserListPage />} />
             <Route path="/admin/orderlist" element={<OrderListPage />} />
             <Route path="/admin/supportlist" element={<SupportListPage />} />
+            <Route path="/admin/chat" element={<AdminChatPage />} />
           </Route>
         </Routes>
       </main>
       <Footer />
       <SupportBox />
+      <ChatWidget />
     </>
   );
 };
