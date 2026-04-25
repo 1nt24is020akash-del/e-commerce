@@ -10,6 +10,7 @@ import productRoutes from './routes/productRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import couponRoutes from './routes/couponRoutes.js';
+import supportRoutes from './routes/supportRoutes.js';
 import Product from './models/productModel.js';
 import products from './data/products.js';
 import User from './models/userModel.js';
@@ -32,6 +33,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/coupons', couponRoutes);
+app.use('/api/support', supportRoutes);
 
 app.get('/api/cleanup', async (req, res) => {
   try {
