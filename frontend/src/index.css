@@ -124,17 +124,13 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Music Player */
 .music-player-bar {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 0.5rem 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.3rem 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 1100;
-  height: 45px;
+  height: 40px;
 }
 
 .music-controls {

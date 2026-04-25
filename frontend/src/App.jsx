@@ -6,7 +6,6 @@ import toast, { Toaster } from 'react-hot-toast';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import SupportBox from './components/SupportBox';
-import MusicPlayer from './components/MusicPlayer';
 import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
 import CartPage from './pages/CartPage';
@@ -101,7 +100,6 @@ const App = () => {
   return (
     <>
       <Toaster />
-      <MusicPlayer />
       <Header />
       <main className="main-content container">
         <Routes>

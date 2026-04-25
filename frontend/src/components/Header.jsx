@@ -6,6 +6,7 @@ import { logout } from '../slices/authSlice';
 import { useLogoutMutation } from '../slices/usersApiSlice';
 import { useState, useEffect } from 'react';
 import SearchBox from './SearchBox';
+import MusicPlayer from './MusicPlayer';
 
 const Header = () => {
   const { cartItems } = useSelector((state) => state.cart);
@@ -106,6 +107,7 @@ const Header = () => {
           </ul>
         </nav>
       </div>
+      <MusicPlayer />
     </header>
   );
 };

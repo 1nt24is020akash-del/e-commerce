@@ -2,10 +2,19 @@ import React, { useState, useRef } from 'react';
 import { FaPlay, FaPause, FaVolumeUp, FaVolumeMute } from 'react-icons/fa';
 
 const MusicPlayer = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
   const [volume, setVolume] = useState(0.5);
   const audioRef = useRef(null);
+
+  React.useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.play().catch(error => {
+        console.log("Autoplay blocked by browser. User interaction required.");
+        setIsPlaying(false);
+      });
+    }
+  }, []);
 
   const togglePlay = () => {
     if (isPlaying) {
@@ -33,8 +42,8 @@ const MusicPlayer = () => {
   };
 
   return (
-    <div className="music-player-bar">
-      <audio ref={audioRef} src="/music/background.mp3" loop />
+    <div className="music-player-bar secondary">
+      <audio ref={audioRef} src="/music/background.mp3" loop autoPlay />
       <div className="music-controls">
         <button onClick={togglePlay} className="music-btn play-btn" title={isPlaying ? 'Pause Music' : 'Play Music'}>
           {isPlaying ? <FaPause /> : <FaPlay />}
