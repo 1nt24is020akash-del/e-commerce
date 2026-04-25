@@ -16,6 +16,16 @@ const addOrderItems = asyncHandler(async (req, res) => {
     });
     const createdOrder = await order.save();
 
+    // Notify Admin of New Order
+    const io = req.app.get('socketio');
+    if (io) {
+      io.emit('newOrderNotification', {
+        orderId: createdOrder._id,
+        userName: req.user.name,
+        totalPrice: createdOrder.totalPrice,
+      });
+    }
+
     for (const item of order.orderItems) {
       const product = await Product.findById(item.product);
       if (product) {

@@ -61,6 +61,35 @@ const App = () => {
         audio.play().catch(e => console.log('Audio play failed'));
       });
 
+      socket.on('newOrderNotification', (data) => {
+        toast((t) => (
+          <span style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <strong>📦 New Order Placed!</strong>
+            <span>User <b>{data.userName}</b> just placed a new order for <b>₹{data.totalPrice}</b>.</span>
+            <Link 
+              to={`/order/${data.orderId}`} 
+              onClick={() => toast.dismiss(t.id)}
+              style={{ color: '#4f46e5', fontWeight: 'bold', textDecoration: 'underline' }}
+            >
+              View Order
+            </Link>
+          </span>
+        ), {
+          duration: 10000,
+          position: 'top-right',
+          style: {
+            background: '#fff',
+            color: '#333',
+            border: '2px solid #4f46e5',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+            padding: '16px',
+          },
+        });
+        
+        const audio = new Audio('/sounds/notification.mp3');
+        audio.play().catch(e => console.log('Audio play failed'));
+      });
+
       return () => {
         socket.off('paymentNotification');
         socket.disconnect();
