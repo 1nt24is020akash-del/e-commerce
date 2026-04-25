@@ -7,7 +7,9 @@ const getProducts = asyncHandler(async (req, res) => {
     : {};
     
   const category = req.query.category && req.query.category !== 'All Items' && req.query.category !== 'undefined'
-    ? { category: req.query.category }
+    ? (req.query.category === 'Fashion' 
+        ? { category: { $in: ['Fashion', 'Clothes'] } } 
+        : { category: req.query.category })
     : {};
 
   let products = await Product.find({ ...keyword, ...category });
