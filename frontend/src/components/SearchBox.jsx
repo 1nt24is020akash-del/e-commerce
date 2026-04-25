@@ -17,33 +17,24 @@ const SearchBox = () => {
   };
 
   return (
-    <form onSubmit={submitHandler} style={{ flex: 1, margin: '0 2rem', position: 'relative' }}>
-      <FaSearch style={{
-        position: 'absolute',
-        left: '15px',
-        top: '50%',
-        transform: 'translateY(-50%)',
-        color: '#64748b',
-        fontSize: '1.1rem'
-      }} />
+    <form onSubmit={submitHandler} className="search-form" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1 }}>
       <input
         type="text"
         name="q"
         onChange={(e) => setKeyword(e.target.value)}
         value={keyword}
-        placeholder="Search for Products, Brands and More"
-        className="form-control flipkart-search"
+        placeholder="Search Products..."
+        className="form-control"
         style={{ 
-          width: '100%', 
-          padding: '0.75rem 1rem 0.75rem 3rem', 
+          padding: '0.6rem 1rem',
           borderRadius: '8px',
-          background: '#f0f5ff',
-          border: '1px solid transparent',
-          transition: 'all 0.3s ease',
-          fontSize: '0.95rem',
-          color: '#334155'
+          border: '1px solid var(--border-color)',
+          width: '100%'
         }}
       />
+      <button type="submit" className="btn btn-search">
+        Search
+      </button>
     </form>
   );
 };

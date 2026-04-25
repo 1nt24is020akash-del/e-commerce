@@ -276,20 +276,98 @@ header {
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
-.nav-item::after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: -4px;
-  left: 0;
-  background: var(--button-gradient);
-  transition: width var(--transition-speed) ease;
-  border-radius: 2px;
-}
-
 .nav-item:hover::after {
   width: 100%;
+}
+
+/* Reverted Header Styles */
+.welcome-msg {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-style: italic;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: opacity 0.2s;
+}
+
+.nav-link:hover {
+  opacity: 0.8;
+}
+
+.admin-links {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+}
+
+.nav-link-admin {
+  color: #6366f1; /* Indigo color from the screenshot */
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: transform 0.2s;
+}
+
+.nav-link-admin:hover {
+  transform: translateY(-1px);
+  color: #4f46e5;
+}
+
+.btn-search {
+  background: white;
+  color: #0f172a;
+  border: 1px solid var(--card-border);
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.btn-search:hover {
+  background: #f8fafc;
+  transform: translateY(-1px);
+}
+
+.btn-logout {
+  background: white;
+  color: #0f172a;
+  border: 1px solid var(--card-border);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.btn-logout:hover {
+  background: #f1f5f9;
+}
+
+.theme-toggle-btn {
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.theme-toggle-btn:hover {
+  background: rgba(0,0,0,0.05);
 }
 
 /* Grid System */
@@ -1645,111 +1723,7 @@ footer {
   }
 }
 
-/* Flipkart Header Enhancements */
-.header-container {
-  padding: 0.5rem 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
 
-.nav-item-flex {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 8px;
-  transition: background 0.2s;
-}
-
-.nav-item-flex:hover {
-  background: rgba(0, 0, 0, 0.03);
-}
-
-.nav-dropdown-wrapper {
-  position: relative;
-}
-
-.nav-dropdown-menu {
-  position: absolute;
-  top: 120%;
-  left: 50%;
-  transform: translateX(-50%) translateY(10px);
-  min-width: 200px;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 1000;
-  padding: 0.5rem;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-}
-
-.nav-dropdown-wrapper:hover .nav-dropdown-menu {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(0);
-}
-
-.nav-dropdown-menu a, 
-.nav-dropdown-menu button {
-  padding: 0.8rem 1rem;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 0.9rem;
-  color: #333;
-  transition: background 0.2s;
-  background: none;
-  border: none;
-  width: 100%;
-  text-align: left;
-}
-
-.nav-dropdown-menu a:hover, 
-.nav-dropdown-menu button:hover {
-  background: rgba(40, 116, 240, 0.08);
-  color: #2874f0;
-}
-
-.cart-badge-flipkart {
-  position: absolute;
-  top: -8px;
-  left: 12px;
-  background: #ff3f6c;
-  color: white;
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 2px 5px;
-  border-radius: 50%;
-  min-width: 18px;
-  text-align: center;
-  border: 1px solid white;
-}
-
-.theme-toggle-btn {
-  background: none;
-  border: none;
-  font-size: 1.2rem;
-  color: #666;
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s;
-}
-
-.theme-toggle-btn:hover {
-  background: rgba(0, 0, 0, 0.05);
-  color: var(--primary-color);
-  transform: rotate(15deg);
-}
 
 /* Category Navigation */
 .category-nav-wrapper {
@@ -1803,8 +1777,4 @@ footer {
   transition: color 0.2s;
 }
 
-.flipkart-search:focus {
-  background: #fff !important;
-  border-color: #2874f0 !important;
-  box-shadow: 0 0 0 4px rgba(40, 116, 240, 0.1) !important;
-}
+
