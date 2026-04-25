@@ -1,13 +1,32 @@
-import React, { useState } from 'react';
 import { useSendBroadcastEmailMutation } from '../../slices/usersApiSlice';
 import toast from 'react-hot-toast';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import { FaTrash } from 'react-icons/fa';
 
 const AdminBroadcastPage = () => {
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
-  const [preview, setPreview] = useState(false);
 
   const [sendEmail, { isLoading }] = useSendBroadcastEmailMutation();
+
+  const modules = {
+    toolbar: [
+      [{ 'header': [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      ['link', 'image', 'video'],
+      ['clean']
+    ],
+  };
+
+  const clearHandler = () => {
+    if (window.confirm('Clear all content?')) {
+      setSubject('');
+      setMessage('');
+    }
+  };
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -45,49 +64,34 @@ const AdminBroadcastPage = () => {
         </div>
 
         <div className="form-group">
-          <label>Email Body (HTML supported)</label>
-          <div className="editor-container">
-            <textarea 
-              rows="15" 
-              placeholder="Enter your message here. You can use HTML tags like <img>, <h1>, <p>, etc." 
+          <label>Email Body</label>
+          <div className="editor-wrapper">
+            <ReactQuill 
+              theme="snow" 
               value={message} 
-              onChange={(e) => setMessage(e.target.value)}
-            ></textarea>
-            
-            <div className="help-box">
-              <h3>💡 Tips for Media:</h3>
-              <ul>
-                <li><strong>Image:</strong> <code>&lt;img src="URL" style="max-width:100%" /&gt;</code></li>
-                <li><strong>Video Link:</strong> <code>&lt;a href="URL"&gt;Watch Video&lt;/a&gt;</code></li>
-                <li><strong>Bold Text:</strong> <code>&lt;strong&gt;Text&lt;/strong&gt;</code></li>
-              </ul>
-            </div>
+              onChange={setMessage} 
+              modules={modules}
+              placeholder="Write your email here..."
+            />
           </div>
         </div>
 
-        <div className="actions">
-          <button 
-            type="button" 
-            className="btn btn-outline" 
-            onClick={() => setPreview(!preview)}
-          >
-            {preview ? 'Edit Message' : 'Preview HTML'}
-          </button>
-          <button type="submit" className="btn btn-primary" disabled={isLoading}>
-            {isLoading ? 'Sending...' : 'Send to All Users'}
-          </button>
+        <div className="actions-bar">
+          <div className="main-actions">
+            <button type="submit" className="btn btn-primary send-btn" disabled={isLoading}>
+              {isLoading ? 'Sending...' : 'Send'}
+            </button>
+            <button 
+              type="button" 
+              className="btn-icon-only delete-btn" 
+              onClick={clearHandler}
+              title="Clear all"
+            >
+              <FaTrash />
+            </button>
+          </div>
         </div>
       </form>
-
-      {preview && (
-        <div className="preview-section">
-          <h2>Email Preview</h2>
-          <div 
-            className="preview-content" 
-            dangerouslySetInnerHTML={{ __html: message }}
-          ></div>
-        </div>
-      )}
     </div>
   );
 };
