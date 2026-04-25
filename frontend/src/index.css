@@ -1149,7 +1149,7 @@ footer {
 
 /* Announcement Bar */
 .announcement-bar {
-  background: linear-gradient(90deg, #6366f1, #a855f7);
+  background: linear-gradient(90deg, #ff0080, #ff8c00);
   color: white;
   padding: 0.5rem 0;
   text-align: center;

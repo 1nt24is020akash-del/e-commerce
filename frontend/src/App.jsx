@@ -43,7 +43,7 @@ const App = () => {
         position: 'top-center',
         icon: '📢',
         style: {
-          background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
+          background: 'linear-gradient(135deg, #ff0080 0%, #ff8c00 100%)',
           color: 'white',
           fontWeight: 'bold',
           borderRadius: '20px',
