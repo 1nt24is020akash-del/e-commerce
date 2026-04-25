@@ -11,8 +11,8 @@ const BannerCarousel = () => {
   const banners = [
     {
       id: 0,
-      type: 'video',
-      video: '/videos/promo.mp4',
+      type: 'youtube',
+      video: 'https://www.youtube.com/embed/cNOKQIw81SE?autoplay=1&mute=1&loop=1&playlist=cNOKQIw81SE&controls=0&showinfo=0&rel=0&modestbranding=1',
       title: 'Experience Modern Shopping',
       subtitle: 'Fast, Reliable, and Premium'
     },
@@ -67,7 +67,17 @@ const BannerCarousel = () => {
         {banners.map((banner) => (
           <SwiperSlide key={banner.id}>
             <div className="banner-slide">
-              {banner.type === 'video' ? (
+              {banner.type === 'youtube' ? (
+                <iframe
+                  src={banner.video}
+                  title={banner.title}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="banner-video"
+                  style={{ pointerEvents: 'none' }} // Prevents interaction to keep it as a background
+                ></iframe>
+              ) : banner.type === 'video' ? (
                 <video 
                   src={banner.video} 
                   autoPlay 
