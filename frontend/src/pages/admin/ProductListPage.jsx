@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useGetProductsQuery, useCreateProductMutation, useDeleteProductMutation } from '../../slices/productsApiSlice';
+import { useGetProductsQuery, useCreateProductMutation, useDeleteProductMutation, useSeedProductsMutation } from '../../slices/productsApiSlice';
 
 const ProductListPage = () => {
   const { data: products, isLoading, error, refetch } = useGetProductsQuery();
   const [createProduct, { isLoading: loadingCreate }] = useCreateProductMutation();
   const [deleteProduct, { isLoading: loadingDelete }] = useDeleteProductMutation();
+  const [seedProducts, { isLoading: loadingSeed }] = useSeedProductsMutation();
 
   const createProductHandler = async () => {
     if (window.confirm('Are you sure you want to create a new product?')) {
@@ -29,11 +30,28 @@ const ProductListPage = () => {
     }
   };
 
+  const seedProductsHandler = async () => {
+    if (window.confirm('This will reset the entire product list to the latest Flipkart-inspired collection. Continue?')) {
+      try {
+        await seedProducts().unwrap();
+        refetch();
+        alert('Products restored successfully!');
+      } catch (err) {
+        alert(err?.data?.message || err.error);
+      }
+    }
+  };
+
   return (
     <>
       <div className="flex-between" style={{marginBottom: '1.5rem'}}>
         <h1>Products</h1>
-        <button className="btn btn-primary" onClick={createProductHandler}>Create Product</button>
+        <div style={{display: 'flex', gap: '1rem'}}>
+          <button className="btn btn-outline" onClick={seedProductsHandler} disabled={loadingSeed}>
+            {loadingSeed ? 'Restoring...' : 'Restore All Products'}
+          </button>
+          <button className="btn btn-primary" onClick={createProductHandler}>Create Product</button>
+        </div>
       </div>
 
       {loadingCreate && <div className="loader"></div>}
