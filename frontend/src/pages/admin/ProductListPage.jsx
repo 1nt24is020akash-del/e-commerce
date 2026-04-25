@@ -7,6 +7,7 @@ const ProductListPage = () => {
   const [createProduct, { isLoading: loadingCreate }] = useCreateProductMutation();
   const [deleteProduct, { isLoading: loadingDelete }] = useDeleteProductMutation();
   const [seedProducts, { isLoading: loadingSeed }] = useSeedProductsMutation();
+  const [selectedCategory, setSelectedCategory] = React.useState('All Items');
 
   const createProductHandler = async () => {
     if (window.confirm('Are you sure you want to create a new product?')) {
@@ -57,10 +58,41 @@ const ProductListPage = () => {
       {loadingCreate && <div className="loader"></div>}
       {loadingDelete && <div className="loader"></div>}
 
+      {!isLoading && !error && (
+        <div className="category-filter-bar card-glass" style={{
+          display: 'flex', 
+          gap: '1rem', 
+          marginBottom: '2.5rem', 
+          padding: '1.25rem', 
+          borderRadius: '15px',
+          overflowX: 'auto',
+          whiteSpace: 'nowrap',
+          scrollbarWidth: 'none'
+        }}>
+          {['All Items', ...new Set(products.map(p => p.category))].map(cat => (
+            <button
+              key={cat}
+              onClick={() => setSelectedCategory(cat)}
+              className={`btn ${selectedCategory === cat ? 'btn-primary' : 'btn-outline'}`}
+              style={{
+                borderRadius: '30px',
+                padding: '0.6rem 1.8rem',
+                fontSize: '0.9rem',
+                minWidth: 'fit-content'
+              }}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+      )}
+
       {isLoading ? <div className="loader"></div> : error ? <div className="alert alert-danger">{error.data?.message}</div> : (
         <div className="product-admin-sections">
           {Object.entries(
-            products.reduce((acc, product) => {
+            products
+              .filter(p => selectedCategory === 'All Items' || p.category === selectedCategory)
+              .reduce((acc, product) => {
               const category = product.category || 'Other';
               if (!acc[category]) acc[category] = [];
               acc[category].push(product);
