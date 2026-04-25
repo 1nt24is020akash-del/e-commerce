@@ -23,7 +23,6 @@ import ProductEditPage from './pages/admin/ProductEditPage';
 import UserListPage from './pages/admin/UserListPage';
 import OrderListPage from './pages/admin/OrderListPage';
 import SupportListPage from './pages/admin/SupportListPage';
-import AdminBroadcastPage from './pages/admin/AdminBroadcastPage';
 
 const App = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -125,7 +124,6 @@ const App = () => {
             <Route path="/admin/userlist" element={<UserListPage />} />
             <Route path="/admin/orderlist" element={<OrderListPage />} />
             <Route path="/admin/supportlist" element={<SupportListPage />} />
-            <Route path="/admin/broadcast" element={<AdminBroadcastPage />} />
           </Route>
         </Routes>
       </main>
