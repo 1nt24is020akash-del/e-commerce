@@ -12,7 +12,7 @@ const BannerCarousel = () => {
     {
       id: 0,
       type: 'video',
-      video: 'https://videos.pexels.com/video-files/4446905/4446905-uhd_2560_1440_25fps.mp4',
+      video: '/videos/promo.mp4',
       title: 'Experience Modern Shopping',
       subtitle: 'Fast, Reliable, and Premium'
     },
