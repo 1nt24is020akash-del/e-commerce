@@ -164,4 +164,34 @@ const updateUser = asyncHandler(async (req, res) => {
   }
 });
 
-export { authUser, registerUser, logoutUser, getUserProfile, updateUserProfile, getUsers, deleteUser, getUserById, updateUser };
+// @desc    Send broadcast email to all users
+const sendEmailToUsers = asyncHandler(async (req, res) => {
+  const { subject, message } = req.body;
+  const users = await User.find({});
+
+  if (users.length > 0) {
+    for (const user of users) {
+      try {
+        await sendEmail({
+          email: user.email,
+          subject: subject,
+          message: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px; border-radius: 10px;">
+              ${message}
+              <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+              <p style="font-size: 0.8rem; color: #888; text-align: center;">You are receiving this email because you are a registered user of MERN E-Shop.</p>
+            </div>
+          `,
+        });
+      } catch (error) {
+        console.error(`Failed to send email to ${user.email}:`, error);
+      }
+    }
+    res.json({ message: 'Broadcast emails sent successfully!' });
+  } else {
+    res.status(404);
+    throw new Error('No users found');
+  }
+});
+
+export { authUser, registerUser, logoutUser, getUserProfile, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, sendEmailToUsers };

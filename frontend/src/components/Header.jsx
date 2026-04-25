@@ -84,6 +84,7 @@ const Header = () => {
                     <Link to="/admin/userlist" className="nav-item" style={{color: 'var(--primary-color)'}}>Users</Link>
                     <Link to="/admin/orderlist" className="nav-item" style={{color: 'var(--primary-color)'}}>Orders</Link>
                     <Link to="/admin/supportlist" className="nav-item" style={{color: 'var(--primary-color)'}}>Support</Link>
+                    <Link to="/admin/broadcast" className="nav-item" style={{color: 'var(--primary-color)'}}>Broadcast</Link>
                   </li>
                 )}
               </>

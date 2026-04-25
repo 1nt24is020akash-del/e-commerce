@@ -30,11 +30,14 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       query: (data) => ({ url: `/users/${data.userId}`, method: 'PUT', body: data }),
       invalidatesTags: ['User'],
     }),
+    sendBroadcastEmail: builder.mutation({
+      query: (data) => ({ url: '/users/broadcast', method: 'POST', body: data }),
+    }),
   }),
 });
 
 export const {
   useLoginMutation, useRegisterMutation, useLogoutMutation,
   useProfileMutation, useGetUsersQuery, useDeleteUserMutation,
-  useGetUserDetailsQuery, useUpdateUserMutation,
+  useGetUserDetailsQuery, useUpdateUserMutation, useSendBroadcastEmailMutation,
 } = usersApiSlice;
