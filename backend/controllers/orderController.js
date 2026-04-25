@@ -168,4 +168,21 @@ const updateOrderToPaidMock = asyncHandler(async (req, res) => {
   }
 });
 
-export { addOrderItems, getOrderById, updateOrderToPaid, updateOrderToPaidAdmin, updateOrderToPaidMock, getMyOrders, getOrders, updateOrderToDelivered, createRazorpayOrder };
+const notifyPayment = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id).populate('user', 'name');
+  if (order) {
+    const io = req.app.get('socketio');
+    io.emit('paymentNotification', {
+      orderId: order._id,
+      userName: order.user.name,
+      amount: order.totalPrice,
+      paymentMethod: order.paymentMethod,
+    });
+    res.json({ message: 'Admin notified of payment' });
+  } else {
+    res.status(404);
+    throw new Error('Order not found');
+  }
+});
+
+export { addOrderItems, getOrderById, updateOrderToPaid, updateOrderToPaidAdmin, updateOrderToPaidMock, getMyOrders, getOrders, updateOrderToDelivered, createRazorpayOrder, notifyPayment };

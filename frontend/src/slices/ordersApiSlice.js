@@ -37,10 +37,14 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
       query: (orderId) => ({ url: `/orders/${orderId}/deliver`, method: 'PUT' }),
       invalidatesTags: ['Order'],
     }),
+    notifyPayment: builder.mutation({
+      query: (orderId) => ({ url: `/orders/${orderId}/notify-payment`, method: 'POST' }),
+    }),
   }),
 });
 
 export const {
   useCreateOrderMutation, useGetOrderDetailsQuery, usePayOrderMutation, usePayOrderAdminMutation,
   usePayOrderMockMutation, useGetMyOrdersQuery, useGetOrdersQuery, useDeliverOrderMutation,
+  useNotifyPaymentMutation,
 } = ordersApiSlice;

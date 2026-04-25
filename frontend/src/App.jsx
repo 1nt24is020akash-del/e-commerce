@@ -1,5 +1,8 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { io } from 'socket.io-client';
+import toast, { Toaster } from 'react-hot-toast';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import SupportBox from './components/SupportBox';
@@ -22,8 +25,52 @@ import OrderListPage from './pages/admin/OrderListPage';
 import SupportListPage from './pages/admin/SupportListPage';
 
 const App = () => {
+  const { userInfo } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (userInfo && userInfo.isAdmin) {
+      const socket = io();
+
+      socket.on('paymentNotification', (data) => {
+        toast((t) => (
+          <span style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <strong>💰 New PhonePe Payment!</strong>
+            <span>User <b>{data.userName}</b> reported a payment of <b>₹{data.amount}</b>.</span>
+            <Link 
+              to={`/order/${data.orderId}`} 
+              onClick={() => toast.dismiss(t.id)}
+              style={{ color: 'var(--primary-color)', fontWeight: 'bold', textDecoration: 'underline' }}
+            >
+              View Order Details
+            </Link>
+          </span>
+        ), {
+          duration: 10000,
+          position: 'top-right',
+          style: {
+            background: '#fff',
+            color: '#333',
+            border: '2px solid var(--success-color)',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+            padding: '16px',
+          },
+        });
+        
+        // Play a notification sound if possible
+        const audio = new Audio('/sounds/notification.mp3');
+        audio.play().catch(e => console.log('Audio play failed'));
+      });
+
+      return () => {
+        socket.off('paymentNotification');
+        socket.disconnect();
+      };
+    }
+  }, [userInfo]);
+
   return (
     <>
+      <Toaster />
       <Header />
       <main className="main-content container">
         <Routes>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useGetOrderDetailsQuery, usePayOrderMutation, useDeliverOrderMutation, usePayOrderAdminMutation, usePayOrderMockMutation } from '../slices/ordersApiSlice';
+import { useGetOrderDetailsQuery, usePayOrderMutation, useDeliverOrderMutation, usePayOrderAdminMutation, usePayOrderMockMutation, useNotifyPaymentMutation } from '../slices/ordersApiSlice';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import MockPaymentModal from '../components/MockPaymentModal';
@@ -12,6 +12,7 @@ const OrderPage = () => {
   const [deliverOrder, { isLoading: loadingDeliver }] = useDeliverOrderMutation();
   const [payOrderAdmin, { isLoading: loadingPayAdmin }] = usePayOrderAdminMutation();
   const [payOrderMock, { isLoading: loadingPayMock }] = usePayOrderMockMutation();
+  const [notifyPayment, { isLoading: loadingNotify }] = useNotifyPaymentMutation();
   const { userInfo } = useSelector((state) => state.auth);
   
   const [showMockPayment, setShowMockPayment] = useState(false);
@@ -44,6 +45,15 @@ const OrderPage = () => {
       refetch();
       setShowMockPayment(false);
       alert('Payment Successful!');
+    } catch (err) {
+      alert(err?.data?.message || err.message);
+    }
+  };
+
+  const notifyAdminHandler = async () => {
+    try {
+      await notifyPayment(orderId).unwrap();
+      alert('Admin has been notified! They will verify your payment soon.');
     } catch (err) {
       alert(err?.data?.message || err.message);
     }
@@ -231,9 +241,17 @@ const OrderPage = () => {
                     alert('UPI ID copied to clipboard!');
                   }}
                   className="btn btn-primary btn-block" 
-                  style={{ backgroundColor: '#5f259f', borderColor: '#5f259f', display: 'block', width: '100%' }}
+                  style={{ backgroundColor: '#5f259f', borderColor: '#5f259f', display: 'block', width: '100%', marginBottom: '0.5rem' }}
                 >
                   Copy UPI ID
+                </button>
+                <button 
+                  onClick={notifyAdminHandler}
+                  disabled={loadingNotify}
+                  className="btn btn-block" 
+                  style={{ backgroundColor: 'var(--success-color)', color: 'white', display: 'block', width: '100%' }}
+                >
+                  {loadingNotify ? 'Notifying...' : 'Notify Admin of Payment'}
                 </button>
               </div>
             )}
