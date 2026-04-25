@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, EffectFade } from 'swiper/modules';
+import ReactPlayer from 'react-player/youtube';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -8,11 +9,13 @@ import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
 
 const BannerCarousel = () => {
+  const [swiper, setSwiper] = useState(null);
+
   const banners = [
     {
       id: 0,
       type: 'youtube',
-      video: 'https://www.youtube.com/embed/cNOKQIw81SE?autoplay=1&mute=1&loop=1&playlist=cNOKQIw81SE&controls=0&showinfo=0&rel=0&modestbranding=1',
+      video: 'https://www.youtube.com/watch?v=cNOKQIw81SE',
       title: 'Experience Modern Shopping',
       subtitle: 'Fast, Reliable, and Premium'
     },
@@ -46,6 +49,12 @@ const BannerCarousel = () => {
     }
   ];
 
+  const handleVideoEnd = () => {
+    if (swiper) {
+      swiper.slideNext();
+    }
+  };
+
   return (
     <div className="banner-carousel-container">
       <Swiper
@@ -53,6 +62,7 @@ const BannerCarousel = () => {
         effect={'fade'}
         spaceBetween={0}
         slidesPerView={1}
+        onSwiper={setSwiper}
         autoplay={{
           delay: 5000,
           disableOnInteraction: false,
@@ -68,15 +78,22 @@ const BannerCarousel = () => {
           <SwiperSlide key={banner.id}>
             <div className="banner-slide">
               {banner.type === 'youtube' ? (
-                <iframe
-                  src={banner.video}
-                  title={banner.title}
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="banner-video"
-                  style={{ pointerEvents: 'none' }} // Prevents interaction to keep it as a background
-                ></iframe>
+                <div className="banner-video-wrapper">
+                  <ReactPlayer
+                    url={banner.video}
+                    playing={true}
+                    muted={true}
+                    width="100%"
+                    height="100%"
+                    onEnded={handleVideoEnd}
+                    config={{
+                      youtube: {
+                        playerVars: { showinfo: 0, controls: 0, rel: 0, modestbranding: 1 }
+                      }
+                    }}
+                    className="react-player"
+                  />
+                </div>
               ) : banner.type === 'video' ? (
                 <video 
                   src={banner.video} 
