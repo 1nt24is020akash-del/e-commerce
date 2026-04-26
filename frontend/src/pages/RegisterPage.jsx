@@ -9,6 +9,7 @@ const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [phone, setPhone] = useState('');
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ const RegisterPage = () => {
       return;
     }
     try {
-      const res = await register({ name, email, password }).unwrap();
+      const res = await register({ name, email, password, phone }).unwrap();
       dispatch(setCredentials({ ...res }));
       navigate(redirect);
     } catch (err) {
@@ -67,6 +68,17 @@ const RegisterPage = () => {
             placeholder="Enter email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        
+        <div className="form-group">
+          <label className="form-label">Phone Number (WhatsApp)</label>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Enter phone number"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
           />
         </div>
 

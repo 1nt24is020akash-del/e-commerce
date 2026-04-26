@@ -29,6 +29,7 @@ const UserListPage = () => {
               <th>ID</th>
               <th>NAME</th>
               <th>EMAIL</th>
+              <th>PHONE</th>
               <th>ADMIN</th>
               <th></th>
             </tr>
@@ -39,6 +40,7 @@ const UserListPage = () => {
                 <td>{user._id}</td>
                 <td>{user.name}</td>
                 <td><a href={`mailto:${user.email}`}>{user.email}</a></td>
+                <td>{user.phone || 'N/A'}</td>
                 <td>{user.isAdmin ? <FaCheck color="green" /> : <FaTimes color="red" />}</td>
                 <td>
                   <button className="btn btn-outline" onClick={() => deleteHandler(user._id)}>

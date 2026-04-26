@@ -10,6 +10,7 @@ const ProfilePage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [phone, setPhone] = useState('');
 
   const dispatch = useDispatch();
 
@@ -23,6 +24,7 @@ const ProfilePage = () => {
     if (userInfo) {
       setName(userInfo.name);
       setEmail(userInfo.email);
+      setPhone(userInfo.phone || '');
     }
   }, [userInfo]);
 
@@ -32,7 +34,7 @@ const ProfilePage = () => {
       alert('Passwords do not match');
     } else {
       try {
-        const res = await updateProfile({ _id: userInfo._id, name, email, password }).unwrap();
+        const res = await updateProfile({ _id: userInfo._id, name, email, phone, password }).unwrap();
         dispatch(setCredentials({ ...res }));
         alert('Profile updated successfully');
       } catch (err) {
@@ -53,6 +55,10 @@ const ProfilePage = () => {
           <div className="form-group">
             <label className="form-label">Email</label>
             <input type="email" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} />
+          </div>
+          <div className="form-group">
+            <label className="form-label">Phone Number (WhatsApp)</label>
+            <input type="text" className="form-control" value={phone} onChange={(e) => setPhone(e.target.value)} />
           </div>
           <div className="form-group">
             <label className="form-label">Password</label>
