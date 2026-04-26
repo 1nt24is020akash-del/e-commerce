@@ -6,7 +6,8 @@ import {
   useDeleteProductMutation, 
   useSeedProductsMutation,
   useDeleteProductsMutation,
-  useCreateMultipleProductsMutation
+  useCreateMultipleProductsMutation,
+  useUploadProductImageMutation
 } from '../../slices/productsApiSlice';
 import { FaTrash, FaPlus, FaCheck, FaTimes } from 'react-icons/fa';
 
