@@ -156,7 +156,7 @@ const App = () => {
             <Route path="/admin/userlist" element={<UserListPage />} />
             <Route path="/admin/orderlist" element={<OrderListPage />} />
             <Route path="/admin/supportlist" element={<SupportListPage />} />
-            <Route path="/admin/chat" element={<AdminChatPage />} />
+            <Route path="/chat" element={<AdminChatPage />} />
           </Route>
         </Routes>
       </main>
