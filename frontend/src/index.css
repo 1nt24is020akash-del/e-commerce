@@ -2353,3 +2353,15 @@ footer {
   color: var(--primary-color, #2874f0);
   margin-left: 5px;
 }
+
+/* Voice Search Animation */
+.mic-btn.listening {
+  animation: pulse-red 1.5s infinite;
+  color: #ff4757 !important;
+}
+
+@keyframes pulse-red {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.4); }
+  70% { transform: scale(1.2); box-shadow: 0 0 0 10px rgba(255, 71, 87, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
+}

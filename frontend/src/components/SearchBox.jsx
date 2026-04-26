@@ -1,19 +1,56 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch, FaMicrophone } from 'react-icons/fa';
 
 const SearchBox = () => {
   const navigate = useNavigate();
   const { keyword: urlKeyword } = useParams();
   const [keyword, setKeyword] = useState(urlKeyword || '');
+  const [isListening, setIsListening] = useState(false);
 
   const submitHandler = (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     if (keyword.trim()) {
       navigate(`/search/${keyword}`);
     } else {
       navigate('/');
     }
+  };
+
+  const handleVoiceSearch = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert('Your browser does not support voice search.');
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+
+    recognition.onstart = () => {
+      setIsListening(true);
+    };
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      setKeyword(transcript);
+      setIsListening(false);
+      // Auto-submit after voice recognition
+      setTimeout(() => {
+        navigate(`/search/${transcript}`);
+      }, 500);
+    };
+
+    recognition.onerror = () => {
+      setIsListening(false);
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognition.start();
   };
 
   return (
@@ -28,7 +65,7 @@ const SearchBox = () => {
           placeholder="Search for products, brands and more..."
           className="form-control search-input"
           style={{ 
-            padding: '1rem 1rem 1rem 3.5rem',
+            padding: '1rem 3.5rem 1rem 3.5rem',
             borderRadius: '12px 0 0 12px',
             border: '2px solid var(--card-border)',
             borderRight: 'none',
@@ -38,6 +75,24 @@ const SearchBox = () => {
             transition: 'all 0.3s ease'
           }}
         />
+        <button
+          type="button"
+          onClick={handleVoiceSearch}
+          className={`mic-btn ${isListening ? 'listening' : ''}`}
+          style={{
+            position: 'absolute',
+            right: '1rem',
+            background: 'none',
+            border: 'none',
+            color: isListening ? '#ff4757' : 'var(--text-secondary)',
+            fontSize: '1.2rem',
+            cursor: 'pointer',
+            transition: 'all 0.3s'
+          }}
+          title="Voice Search"
+        >
+          <FaMicrophone />
+        </button>
       </div>
       <button type="submit" className="btn btn-search-big" style={{
         borderRadius: '0 12px 12px 0',
