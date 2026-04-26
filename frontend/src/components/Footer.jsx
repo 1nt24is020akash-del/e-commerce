@@ -1,4 +1,4 @@
-import { FaFacebook, FaTwitter, FaYoutube, FaInstagram, FaBriefcase, FaStar, FaGift, FaQuestionCircle } from 'react-icons/fa';
+import { FaFacebook, FaTwitter, FaYoutube, FaInstagram, FaBriefcase, FaStar, FaGift, FaQuestionCircle, FaWhatsapp, FaTelegram, FaEnvelope } from 'react-icons/fa';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -34,41 +34,27 @@ const Footer = () => {
               <li>FAQ</li>
             </ul>
           </div>
-          <div className="footer-col">
-            <h4>CONSUMER POLICY</h4>
-            <ul>
-              <li>Cancellation & Returns</li>
-              <li>Terms Of Use</li>
-              <li>Security</li>
-              <li>Privacy</li>
-              <li>Sitemap</li>
-              <li>Grievance Redressal</li>
-            </ul>
-          </div>
           <div className="footer-col border-left">
             <h4>Mail Us:</h4>
-            <p>MERN E-Shop Private Limited,</p>
-            <p>Buildings Alyssa, Begonia &</p>
-            <p>Clove Embassy Tech Village,</p>
-            <p>Outer Ring Road, Devarabeesanahalli Village,</p>
-            <p>Bengaluru, 560103,</p>
-            <p>Karnataka, India</p>
+            <p>
+              <a href="mailto:akashs14102005@gmail.com" className="footer-link">
+                <FaEnvelope style={{marginRight: '5px'}} /> akashs14102005@gmail.com
+              </a>
+            </p>
             
             <h4 className="social-head">Social:</h4>
             <div className="social-icons">
-              <FaFacebook /> <FaTwitter /> <FaYoutube /> <FaInstagram />
+              <a href="https://wa.me/8660385303" target="_blank" rel="noreferrer" title="WhatsApp"><FaWhatsapp /></a>
+              <a href="https://t.me/+918660385303" target="_blank" rel="noreferrer" title="Telegram"><FaTelegram /></a>
+              <a href="https://www.instagram.com/skyy._.1114?igsh=MWh3c2ZxZnV4anN6MQ==" target="_blank" rel="noreferrer" title="Instagram"><FaInstagram /></a>
+              <FaFacebook /> <FaTwitter /> <FaYoutube />
             </div>
           </div>
           <div className="footer-col">
             <h4>Registered Office Address:</h4>
             <p>MERN E-Shop Private Limited,</p>
-            <p>Buildings Alyssa, Begonia &</p>
-            <p>Clove Embassy Tech Village,</p>
-            <p>Outer Ring Road, Devarabeesanahalli Village,</p>
-            <p>Bengaluru, 560103,</p>
-            <p>Karnataka, India</p>
-            <p>CIN : U51109KA2012PTC066107</p>
-            <p>Telephone: <span className="blue-text">044-45614700 / 044-67415800</span></p>
+            <p>Bengaluru, 560103, Karnataka, India</p>
+            <p>Telephone: <a href="tel:8660385303" className="blue-text">8660385303</a></p>
           </div>
         </div>
       </div>
@@ -82,7 +68,7 @@ const Footer = () => {
             <span><FaQuestionCircle className="yellow-icon" /> Help Center</span>
           </div>
           <div className="copyright">
-            &copy; 2007-{currentYear} MERN E-Shop.com
+            &copy; 2007-{currentYear} MERN E-Shop.com | <span className="creator-credit">Created by Akash</span>
           </div>
           <div className="payment-methods">
             <img src="https://static-assets-web.flixcart.com/batman-returns/batman-returns/p/images/payment-method-c45441.svg" alt="Payment Methods" />
