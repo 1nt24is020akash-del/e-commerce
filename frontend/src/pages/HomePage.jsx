@@ -30,6 +30,7 @@ const HomePage = () => {
 
   return (
     <>
+      <FilterBar />
       {!keyword && <BannerCarousel />}
       
       {keyword && <a href="/" className="btn btn-outline" style={{marginBottom: '1.5rem', display: 'inline-block'}}>Go Back</a>}
@@ -38,7 +39,6 @@ const HomePage = () => {
         <h1 style={{ marginTop: keyword ? '0' : '1rem' }}>
           {keyword ? `Search Results for "${keyword}"` : category !== 'All Items' ? category : 'Latest Products'}
         </h1>
-        <FilterBar />
       </div>
       
       {isLoading ? (
