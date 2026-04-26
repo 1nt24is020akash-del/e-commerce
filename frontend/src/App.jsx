@@ -27,12 +27,57 @@ import UserListPage from './pages/admin/UserListPage';
 import OrderListPage from './pages/admin/OrderListPage';
 import SupportListPage from './pages/admin/SupportListPage';
 import AdminChatPage from './pages/admin/AdminChatPage';
+import AdminNotificationPage from './pages/admin/AdminNotificationPage';
+
+import { useSubscribeMutation } from './slices/notificationsApiSlice';
 
 const App = () => {
   const { userInfo } = useSelector((state) => state.auth);
+  const [subscribe] = useSubscribeMutation();
+
+  const urlBase64ToUint8Array = (base64String) => {
+    const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  };
 
   useEffect(() => {
     const socket = io();
+
+    // Register Service Worker for Push Notifications
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+      const registerServiceWorker = async () => {
+        try {
+          const registration = await navigator.serviceWorker.register('/sw.js');
+          console.log('Service Worker registered');
+
+          // Only subscribe if user is logged in
+          if (userInfo) {
+            let subscription = await registration.pushManager.getSubscription();
+            if (!subscription) {
+              const publicVapidKey = 'BLd2XBPj_IoTs1Hrr7RFQVRJwnK8bZuKUEXm3Z0DjTkBVDIgPtnzLAscI4mXCEvjLp--YCFoCdwhUspihMlswyg';
+              subscription = await registration.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
+              });
+              await subscribe(subscription).unwrap();
+              console.log('Push subscription successful');
+            } else {
+              // Update subscription in case user changed
+              await subscribe(subscription).unwrap();
+            }
+          }
+        } catch (error) {
+          console.error('Service Worker registration/subscription failed:', error);
+        }
+      };
+      registerServiceWorker();
+    }
 
     socket.on('newAnnouncement', (data) => {
       // Play notification sound
@@ -156,6 +201,7 @@ const App = () => {
             <Route path="/admin/userlist" element={<UserListPage />} />
             <Route path="/admin/orderlist" element={<OrderListPage />} />
             <Route path="/admin/supportlist" element={<SupportListPage />} />
+            <Route path="/admin/notifications" element={<AdminNotificationPage />} />
             <Route path="/chat" element={<AdminChatPage />} />
           </Route>
         </Routes>

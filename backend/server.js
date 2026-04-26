@@ -16,6 +16,7 @@ import supportRoutes from './routes/supportRoutes.js';
 import announcementRoutes from './routes/announcementRoutes.js';
 import chatRoutes from './routes/chatRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
+import notificationRoutes from './routes/notificationRoutes.js';
 import Product from './models/productModel.js';
 import products from './data/products.js';
 import User from './models/userModel.js';
@@ -58,6 +59,7 @@ app.use('/api/support', supportRoutes);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 app.get('/api/cleanup', async (req, res) => {
   try {
