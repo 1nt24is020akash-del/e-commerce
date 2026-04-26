@@ -40,9 +40,9 @@ const createAnnouncement = asyncHandler(async (req, res) => {
 
   const users = await User.find({});
   
-  // WhatsApp Configuration (e.g. from Ultramsg)
-  const WHATSAPP_INSTANCE_ID = process.env.WHATSAPP_INSTANCE_ID;
-  const WHATSAPP_TOKEN = process.env.WHATSAPP_TOKEN;
+  // WhatsApp Configuration (using provided Ultramsg credentials)
+  const WHATSAPP_INSTANCE_ID = process.env.WHATSAPP_INSTANCE_ID || 'instance171905';
+  const WHATSAPP_TOKEN = process.env.WHATSAPP_TOKEN || '3ksxz0tk3361vtkf';
   
   // Process all users for Email and WhatsApp
   for (const user of users) {
