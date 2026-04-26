@@ -3,10 +3,16 @@ import { apiSlice } from './apiSlice';
 export const productsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query({
-      query: ({ keyword, category } = {}) => {
+      query: ({ keyword, category, sort, brand, color, rating, isNewArrival, discount } = {}) => {
         let params = {};
         if (keyword) params.keyword = keyword;
         if (category && category !== 'All Items') params.category = category;
+        if (sort) params.sort = sort;
+        if (brand) params.brand = brand;
+        if (color) params.color = color;
+        if (rating) params.rating = rating;
+        if (isNewArrival) params.isNewArrival = isNewArrival;
+        if (discount) params.discount = discount;
         return { url: '/products', params };
       },
       providesTags: ['Product'],

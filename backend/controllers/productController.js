@@ -12,10 +12,31 @@ const getProducts = asyncHandler(async (req, res) => {
         : { category: req.query.category })
     : {};
 
-  let products = await Product.find({ ...keyword, ...category });
+  const brand = req.query.brand ? { brand: req.query.brand } : {};
+  const color = req.query.color ? { color: req.query.color } : {};
+  const rating = req.query.rating ? { rating: { $gte: Number(req.query.rating) } } : {};
+  const isNewArrival = req.query.isNewArrival === 'true' ? { isNewArrival: true } : {};
+  const discount = req.query.discount ? { discount: { $gte: Number(req.query.discount) } } : {};
 
-  // Shuffle products when displaying all items so they appear nicely mixed
-  if (!req.query.category || req.query.category === 'All Items' || req.query.category === 'undefined') {
+  const sortOption = req.query.sort;
+  let sort = {};
+  if (sortOption === 'priceAsc') sort = { price: 1 };
+  else if (sortOption === 'priceDesc') sort = { price: -1 };
+  else if (sortOption === 'popularity') sort = { rating: -1 };
+  else if (sortOption === 'discount') sort = { discount: -1 };
+
+  let products = await Product.find({ 
+    ...keyword, 
+    ...category, 
+    ...brand, 
+    ...color, 
+    ...rating, 
+    ...isNewArrival, 
+    ...discount 
+  }).sort(sort);
+
+  // Default shuffle for "All Items" if no sort is specified
+  if (!sortOption && (!req.query.category || req.query.category === 'All Items' || req.query.category === 'undefined')) {
     products = products.sort(() => Math.random() - 0.5);
   }
 
@@ -50,7 +71,7 @@ const createProduct = asyncHandler(async (req, res) => {
 });
 
 const updateProduct = asyncHandler(async (req, res) => {
-  const { name, price, description, image, brand, category, countInStock } = req.body;
+  const { name, price, description, image, brand, category, countInStock, color, isNewArrival, discount } = req.body;
 
   const product = await Product.findById(req.params.id);
 
@@ -62,6 +83,9 @@ const updateProduct = asyncHandler(async (req, res) => {
     product.brand = brand;
     product.category = category;
     product.countInStock = countInStock;
+    product.color = color;
+    product.isNewArrival = isNewArrival;
+    product.discount = discount;
 
     const updatedProduct = await product.save();
     res.json(updatedProduct);

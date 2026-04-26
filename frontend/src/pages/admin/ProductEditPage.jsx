@@ -15,6 +15,9 @@ const ProductEditPage = () => {
   const [category, setCategory] = useState('');
   const [countInStock, setCountInStock] = useState(0);
   const [description, setDescription] = useState('');
+  const [color, setColor] = useState('');
+  const [isNewArrival, setIsNewArrival] = useState(false);
+  const [discount, setDiscount] = useState(0);
 
   const {
     data: product,
@@ -37,6 +40,9 @@ const ProductEditPage = () => {
       setCategory(product.category);
       setCountInStock(product.countInStock);
       setDescription(product.description);
+      setColor(product.color || '');
+      setIsNewArrival(product.isNewArrival || false);
+      setDiscount(product.discount || 0);
     }
   }, [product]);
 
@@ -52,6 +58,9 @@ const ProductEditPage = () => {
         category,
         description,
         countInStock,
+        color,
+        isNewArrival,
+        discount,
       }).unwrap();
       alert('Product updated successfully');
       refetch();
@@ -139,6 +148,38 @@ const ProductEditPage = () => {
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Color</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Enter color"
+                value={color}
+                onChange={(e) => setColor(e.target.value)}
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Discount Percentage</label>
+              <input
+                type="number"
+                className="form-control"
+                placeholder="Enter discount"
+                value={discount}
+                onChange={(e) => setDiscount(e.target.value)}
+              />
+            </div>
+
+            <div className="form-group" style={{flexDirection: 'row', alignItems: 'center', gap: '0.5rem'}}>
+              <input
+                type="checkbox"
+                id="isNewArrival"
+                checked={isNewArrival}
+                onChange={(e) => setIsNewArrival(e.target.checked)}
+              />
+              <label htmlFor="isNewArrival" className="form-label" style={{marginBottom: 0}}>Mark as New Arrival</label>
             </div>
 
             <div className="form-group">
