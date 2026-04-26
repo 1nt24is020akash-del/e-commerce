@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useGetProductDetailsQuery, useGetProductsQuery } from '../slices/productsApiSlice';
 import { addToCart } from '../slices/cartSlice';
-import { FaShareAlt, FaTruck, FaUndo, FaMoneyBillWave, FaCheckCircle, FaStar } from 'react-icons/fa';
+import { FaShareAlt, FaTruck, FaUndo, FaMoneyBillWave, FaCheckCircle, FaStar, FaWhatsapp, FaInstagram, FaTelegramPlane, FaSnapchatGhost, FaSms, FaCopy } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
 const ProductPage = () => {
@@ -14,6 +14,10 @@ const ProductPage = () => {
 
   const [qty, setQty] = useState(1);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
+
+  const cart = useSelector((state) => state.cart);
+  const { shippingAddress } = cart;
 
   const { data: product, isLoading, error } = useGetProductDetailsQuery(productId);
   const { data: allProducts } = useGetProductsQuery();
@@ -30,10 +34,50 @@ const ProductPage = () => {
     ? allProducts.filter(p => p.category === product.category && p._id !== product._id).slice(0, 4)
     : [];
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(window.location.href);
-    toast.success('Product link copied to clipboard!');
+  const shareProduct = (platform) => {
+    const url = window.location.href;
+    const text = `Check out this amazing product: ${product.name}`;
+    let shareUrl = '';
+
+    switch (platform) {
+      case 'whatsapp':
+        shareUrl = `https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`;
+        break;
+      case 'telegram':
+        shareUrl = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
+        break;
+      case 'sms':
+        shareUrl = `sms:?body=${encodeURIComponent(text + ' ' + url)}`;
+        break;
+      case 'instagram':
+        // Instagram doesn't have a direct share URL for web, so we copy and redirect
+        navigator.clipboard.writeText(url);
+        toast.success('Link copied! Open Instagram to share.');
+        window.open('https://www.instagram.com/', '_blank');
+        return;
+      case 'snapchat':
+        // Snapchat also doesn't have a direct web share, so we copy
+        navigator.clipboard.writeText(url);
+        toast.success('Link copied! Open Snapchat to share.');
+        window.open('https://www.snapchat.com/', '_blank');
+        return;
+      case 'copy':
+        navigator.clipboard.writeText(url);
+        toast.success('Product link copied to clipboard!');
+        return;
+      default:
+        return;
+    }
+
+    if (shareUrl) {
+      window.open(shareUrl, '_blank');
+    }
+    setShowShareModal(false);
   };
+
+  const fullAddress = shippingAddress?.address 
+    ? `${shippingAddress.address}, ${shippingAddress.city} ${shippingAddress.postalCode}`
+    : '400001, Mumbai (Default)';
 
   // Mock rating if none exists
   const displayRating = product.rating || (4 + Math.random()).toFixed(1);
@@ -52,7 +96,7 @@ const ProductPage = () => {
             style={{ cursor: 'zoom-in', position: 'relative' }}
           >
             <img src={product.image} alt={product.name} className="product-img" />
-            <button className="share-btn" onClick={(e) => { e.stopPropagation(); copyToClipboard(); }}>
+            <button className="share-btn" onClick={(e) => { e.stopPropagation(); setShowShareModal(true); }}>
               <FaShareAlt />
             </button>
           </div>
@@ -62,7 +106,7 @@ const ProductPage = () => {
               <FaTruck /> <span>Delivery Details</span>
             </div>
             <div className="delivery-info">
-              <p><strong>Deliver to:</strong> 400001, Mumbai</p>
+              <p><strong>Deliver to:</strong> {fullAddress}</p>
               <p className="delivery-time">Estimated delivery by 5 to 6 days</p>
             </div>
             <div className="policy-icons">
@@ -174,6 +218,44 @@ const ProductPage = () => {
           <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
             <img src={product.image} alt={product.name} />
             <button className="close-lightbox" onClick={() => setIsLightboxOpen(false)}>&times;</button>
+          </div>
+        </div>
+      )}
+
+      {/* Share Modal */}
+      {showShareModal && (
+        <div className="lightbox-overlay" onClick={() => setShowShareModal(false)}>
+          <div className="share-modal-content card-glass" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '1px solid var(--card-border)', paddingBottom: '0.8rem' }}>
+              <h3 style={{ margin: 0 }}>Share Product</h3>
+              <button onClick={() => setShowShareModal(false)} style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: 'var(--text-secondary)' }}>&times;</button>
+            </div>
+            <div className="share-options-grid">
+              <div className="share-option" onClick={() => shareProduct('whatsapp')}>
+                <div className="share-icon wa"><FaWhatsapp /></div>
+                <span>WhatsApp</span>
+              </div>
+              <div className="share-option" onClick={() => shareProduct('telegram')}>
+                <div className="share-icon tg"><FaTelegramPlane /></div>
+                <span>Telegram</span>
+              </div>
+              <div className="share-option" onClick={() => shareProduct('instagram')}>
+                <div className="share-icon ig"><FaInstagram /></div>
+                <span>Instagram</span>
+              </div>
+              <div className="share-option" onClick={() => shareProduct('snapchat')}>
+                <div className="share-icon sc"><FaSnapchatGhost /></div>
+                <span>Snapchat</span>
+              </div>
+              <div className="share-option" onClick={() => shareProduct('sms')}>
+                <div className="share-icon sms"><FaSms /></div>
+                <span>Messages</span>
+              </div>
+              <div className="share-option" onClick={() => shareProduct('copy')}>
+                <div className="share-icon copy"><FaCopy /></div>
+                <span>Copy Link</span>
+              </div>
+            </div>
           </div>
         </div>
       )}
