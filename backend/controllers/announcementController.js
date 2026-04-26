@@ -13,6 +13,12 @@ const getAnnouncement = asyncHandler(async (req, res) => {
 
 import axios from 'axios';
 
+// Helper to format phone for WhatsApp (adds country code if 10 digits)
+const formatPhone = (phone) => {
+  const cleaned = phone.replace(/\D/g, '');
+  return cleaned.length === 10 ? `91${cleaned}` : cleaned;
+};
+
 // @desc    Create/Update announcement
 // @route   POST /api/announcements
 // @access  Private/Admin
@@ -33,6 +39,10 @@ const createAnnouncement = asyncHandler(async (req, res) => {
   io.emit('newAnnouncement', { message });
 
   const users = await User.find({});
+  
+  // WhatsApp Configuration (e.g. from Ultramsg)
+  const WHATSAPP_INSTANCE_ID = process.env.WHATSAPP_INSTANCE_ID;
+  const WHATSAPP_TOKEN = process.env.WHATSAPP_TOKEN;
   
   // Process all users for Email and WhatsApp
   for (const user of users) {
@@ -57,23 +67,23 @@ const createAnnouncement = asyncHandler(async (req, res) => {
       console.error(`Email failed for ${user.email}:`, error);
     }
 
-    // 2. Send WhatsApp (Using Template for API like Ultramsg/Twilio)
+    // 2. Send WhatsApp
     if (user.phone) {
+      const formattedPhone = formatPhone(user.phone);
       try {
-        // This is a template for WhatsApp API integration
-        // For production, replace with your API Key and Instance ID
-        const WHATSAPP_API_URL = process.env.WHATSAPP_API_URL || ''; 
-        if (WHATSAPP_API_URL) {
-          await axios.post(WHATSAPP_API_URL, {
-            token: process.env.WHATSAPP_TOKEN,
-            to: user.phone,
+        if (WHATSAPP_INSTANCE_ID && WHATSAPP_TOKEN) {
+          // Ultramsg.com API structure (ideal for personal numbers)
+          await axios.post(`https://api.ultramsg.com/${WHATSAPP_INSTANCE_ID}/messages/chat`, {
+            token: WHATSAPP_TOKEN,
+            to: formattedPhone,
             body: `🛍️ *MERN E-Shop Update*\n\n${message}\n\nVisit: https://e-commerce-o2zc.onrender.com`
           });
+          console.log(`WhatsApp sent to ${formattedPhone}`);
         } else {
-          console.log(`[SIMULATED WHATSAPP] To: ${user.phone}, Msg: ${message}`);
+          console.log(`[SIMULATED WHATSAPP] To: ${formattedPhone}, Msg: ${message}`);
         }
       } catch (error) {
-        console.error(`WhatsApp failed for ${user.phone}:`, error);
+        console.error(`WhatsApp failed for ${formattedPhone}:`, error?.response?.data || error.message);
       }
     }
   }

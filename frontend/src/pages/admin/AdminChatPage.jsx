@@ -87,6 +87,20 @@ const AdminChatPage = () => {
             {isUpdating ? 'Broadcasting...' : '📢 Send to Everyone'}
           </button>
         </form>
+
+        <div className="whatsapp-help card-glass" style={{ marginTop: '2rem', background: 'rgba(37, 211, 102, 0.05)', border: '1px solid rgba(37, 211, 102, 0.2)' }}>
+          <h4 style={{ color: '#25D366', marginBottom: '0.5rem' }}>WhatsApp Automation Setup</h4>
+          <p style={{ fontSize: '0.85rem' }}>To send messages from <strong>8660385303</strong>:</p>
+          <ol style={{ fontSize: '0.85rem', paddingLeft: '1.2rem' }}>
+            <li>Go to <a href="https://ultramsg.com" target="_blank" rel="noreferrer" style={{ color: '#25D366', fontWeight: 'bold' }}>Ultramsg.com</a> and create a free account.</li>
+            <li>Scan the QR code with your phone (8660385303).</li>
+            <li>Add these keys to your Render <strong>Environment Variables</strong>:</li>
+            <ul style={{ listStyle: 'none', padding: '0.5rem 0', fontWeight: 'bold', fontFamily: 'monospace' }}>
+              <li>WHATSAPP_INSTANCE_ID = (your instance id)</li>
+              <li>WHATSAPP_TOKEN = (your token)</li>
+            </ul>
+          </ol>
+        </div>
       </section>
 
       <div className="chat-dashboard">
