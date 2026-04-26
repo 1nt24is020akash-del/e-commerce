@@ -27,6 +27,14 @@ export const productsApiSlice = apiSlice.injectEndpoints({
     deleteProduct: builder.mutation({
       query: (productId) => ({ url: `/products/${productId}`, method: 'DELETE' }),
     }),
+    deleteProducts: builder.mutation({
+      query: (ids) => ({ url: '/products/delete-multiple', method: 'POST', body: { ids } }),
+      invalidatesTags: ['Product'],
+    }),
+    createMultipleProducts: builder.mutation({
+      query: (products) => ({ url: '/products/bulk-create', method: 'POST', body: { products } }),
+      invalidatesTags: ['Product'],
+    }),
     seedProducts: builder.mutation({
       query: () => ({ url: '/seed-all-products', method: 'GET' }),
       invalidatesTags: ['Product'],
@@ -38,4 +46,5 @@ export const {
   useGetProductsQuery, useGetProductDetailsQuery,
   useCreateProductMutation, useUpdateProductMutation,
   useDeleteProductMutation, useSeedProductsMutation,
+  useDeleteProductsMutation, useCreateMultipleProductsMutation,
 } = productsApiSlice;

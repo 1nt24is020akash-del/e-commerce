@@ -71,16 +71,44 @@ const updateProduct = asyncHandler(async (req, res) => {
   }
 });
 
-const deleteProduct = asyncHandler(async (req, res) => {
-  const product = await Product.findById(req.params.id);
+const deleteProducts = asyncHandler(async (req, res) => {
+  const { ids } = req.body;
 
-  if (product) {
-    await Product.deleteOne({ _id: product._id });
-    res.json({ message: 'Product removed' });
+  if (ids && ids.length > 0) {
+    await Product.deleteMany({ _id: { $in: ids } });
+    res.json({ message: 'Products removed' });
   } else {
-    res.status(404);
-    throw new Error('Product not found');
+    res.status(400);
+    throw new Error('No products selected');
   }
 });
 
-export { getProducts, getProductById, createProduct, updateProduct, deleteProduct };
+const createProducts = asyncHandler(async (req, res) => {
+  const { products } = req.body;
+
+  if (products && products.length > 0) {
+    const productsToCreate = products.map((p) => ({
+      ...p,
+      user: req.user._id,
+      image: p.image || '/images/sample.jpg',
+      numReviews: 0,
+      description: p.description || 'Sample description',
+    }));
+
+    const createdProducts = await Product.insertMany(productsToCreate);
+    res.status(201).json(createdProducts);
+  } else {
+    res.status(400);
+    throw new Error('No products provided');
+  }
+});
+
+export { 
+  getProducts, 
+  getProductById, 
+  createProduct, 
+  updateProduct, 
+  deleteProduct,
+  deleteProducts,
+  createProducts
+};
