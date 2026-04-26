@@ -21,10 +21,12 @@ const ProductListPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('All Items');
   const [selectedIds, setSelectedIds] = useState([]);
   
+  const [uploadProductImage, { isLoading: loadingUpload }] = useUploadProductImageMutation();
+
   // Modal states
   const [showBulkModal, setShowBulkModal] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState('');
-  const [bulkItems, setBulkItems] = useState([{ name: '', price: '', brand: '', countInStock: '' }]);
+  const [bulkItems, setBulkItems] = useState([{ name: '', price: '', brand: '', countInStock: '', image: '' }]);
 
   const createProductHandler = async () => {
     if (window.confirm('Are you sure you want to create a new product?')) {
@@ -103,6 +105,17 @@ const ProductListPage = () => {
     const updated = [...bulkItems];
     updated[index][field] = value;
     setBulkItems(updated);
+  };
+
+  const uploadFileHandler = async (e, index) => {
+    const formData = new FormData();
+    formData.append('image', e.target.files[0]);
+    try {
+      const res = await uploadProductImage(formData).unwrap();
+      updateBulkItem(index, 'image', res.image);
+    } catch (err) {
+      alert(err?.data?.message || err.error);
+    }
   };
 
   const handleBulkSubmit = async (e) => {
@@ -295,6 +308,7 @@ const ProductListPage = () => {
                     <tr style={{textAlign: 'left', fontSize: '0.85rem', color: 'var(--text-secondary)'}}>
                       <th>NAME</th>
                       <th>PRICE</th>
+                      <th>IMAGE (URL or Upload)</th>
                       <th>BRAND</th>
                       <th>STOCK</th>
                       <th></th>
@@ -303,8 +317,25 @@ const ProductListPage = () => {
                   <tbody>
                     {bulkItems.map((item, index) => (
                       <tr key={index}>
-                        <td><input type="text" className="form-control" style={{padding: '0.5rem'}} value={item.name} onChange={(e) => updateBulkItem(index, 'name', e.target.value)} placeholder="Product Name" /></td>
+                        <td><input type="text" className="form-control" style={{padding: '0.5rem'}} value={item.name} onChange={(e) => updateBulkItem(index, 'name', e.target.value)} placeholder="Name" /></td>
                         <td><input type="number" className="form-control" style={{padding: '0.5rem'}} value={item.price} onChange={(e) => updateBulkItem(index, 'price', e.target.value)} placeholder="Price" /></td>
+                        <td>
+                          <div style={{display: 'flex', gap: '0.5rem', alignItems: 'center'}}>
+                            <input 
+                              type="text" 
+                              className="form-control" 
+                              style={{padding: '0.5rem', flex: 1}} 
+                              value={item.image} 
+                              onChange={(e) => updateBulkItem(index, 'image', e.target.value)} 
+                              placeholder="URL" 
+                            />
+                            <label style={{cursor: 'pointer', color: 'var(--primary-color)', fontSize: '1.2rem'}} title="Upload Image">
+                              <FaPlus />
+                              <input type="file" hidden onChange={(e) => uploadFileHandler(e, index)} />
+                            </label>
+                            {item.image && <FaCheck style={{color: 'var(--success-color)'}} />}
+                          </div>
+                        </td>
                         <td><input type="text" className="form-control" style={{padding: '0.5rem'}} value={item.brand} onChange={(e) => updateBulkItem(index, 'brand', e.target.value)} placeholder="Brand" /></td>
                         <td><input type="number" className="form-control" style={{padding: '0.5rem'}} value={item.countInStock} onChange={(e) => updateBulkItem(index, 'countInStock', e.target.value)} placeholder="0" /></td>
                         <td>

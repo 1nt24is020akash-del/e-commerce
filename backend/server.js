@@ -15,6 +15,7 @@ import couponRoutes from './routes/couponRoutes.js';
 import supportRoutes from './routes/supportRoutes.js';
 import announcementRoutes from './routes/announcementRoutes.js';
 import chatRoutes from './routes/chatRoutes.js';
+import uploadRoutes from './routes/uploadRoutes.js';
 import Product from './models/productModel.js';
 import products from './data/products.js';
 import User from './models/userModel.js';
@@ -56,6 +57,7 @@ app.use('/api/coupons', couponRoutes);
 app.use('/api/support', supportRoutes);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/chat', chatRoutes);
+app.use('/api/upload', uploadRoutes);
 
 app.get('/api/cleanup', async (req, res) => {
   try {
@@ -121,6 +123,8 @@ app.get('/api/config/razorpay', (req, res) => res.send({ clientId: process.env.R
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
