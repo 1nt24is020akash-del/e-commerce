@@ -62,17 +62,29 @@ const AdminChatPage = () => {
     <div className="admin-chat-page">
       <h1>Communication Center</h1>
 
-      <section className="announcement-section card-glass">
-        <h3><FaBullhorn /> Global Announcement Bar</h3>
+      <section className="announcement-section card-glass" style={{ border: '2px solid var(--primary-color)', padding: '2rem' }}>
+        <h3 style={{ color: 'var(--primary-color)', fontSize: '1.5rem', marginBottom: '1.5rem' }}>
+          <FaBullhorn /> Global Announcement & Offer Broadcast
+        </h3>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem', fontSize: '0.9rem' }}>
+          This will show a popup on all user screens for 5 seconds with sound, send an email, and attempt a WhatsApp notification.
+        </p>
         <form onSubmit={announcementHandler} className="flex-gap">
-          <input 
-            type="text" 
-            placeholder="Update global offer/news..." 
+          <textarea 
+            className="form-control"
+            style={{ minHeight: '100px', fontSize: '1.1rem', padding: '1rem' }}
+            placeholder="Type your grand announcement or special offer here..." 
             value={announcementMsg}
             onChange={(e) => setAnnouncementMsg(e.target.value)}
+            required
           />
-          <button type="submit" className="btn btn-primary" disabled={isUpdating}>
-            Update for All Users
+          <button 
+            type="submit" 
+            className="btn btn-primary" 
+            disabled={isUpdating}
+            style={{ height: 'auto', padding: '0 2rem' }}
+          >
+            {isUpdating ? 'Broadcasting...' : '📢 Send to Everyone'}
           </button>
         </form>
       </section>

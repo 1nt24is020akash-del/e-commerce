@@ -11,6 +11,8 @@ const getAnnouncement = asyncHandler(async (req, res) => {
   res.json(announcement);
 });
 
+import axios from 'axios';
+
 // @desc    Create/Update announcement
 // @route   POST /api/announcements
 // @access  Private/Admin
@@ -30,28 +32,48 @@ const createAnnouncement = asyncHandler(async (req, res) => {
   const io = req.app.get('socketio');
   io.emit('newAnnouncement', { message });
 
-  // Send Email to all users
   const users = await User.find({});
-  if (users.length > 0) {
-    for (const user of users) {
-      try {
-        await sendEmail({
-          email: user.email,
-          subject: 'New Update from MERN E-Shop!',
-          message: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px; border-radius: 10px;">
-              <h2 style="color: #6366f1;">📢 New Announcement!</h2>
-              <p style="font-size: 1.1rem; line-height: 1.6;">${message}</p>
-              <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-              <p style="font-size: 0.8rem; color: #888; text-align: center;">Check out the latest offers on our website.</p>
-              <div style="text-align: center; margin-top: 20px;">
-                <a href="https://e-commerce-o2zc.onrender.com" style="background: #6366f1; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Visit Store</a>
-              </div>
+  
+  // Process all users for Email and WhatsApp
+  for (const user of users) {
+    // 1. Send Email
+    try {
+      await sendEmail({
+        email: user.email,
+        subject: 'New Update from MERN E-Shop!',
+        message: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px; border-radius: 10px;">
+            <h2 style="color: #6366f1;">📢 New Announcement!</h2>
+            <p style="font-size: 1.1rem; line-height: 1.6;">${message}</p>
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+            <p style="font-size: 0.8rem; color: #888; text-align: center;">Check out the latest offers on our website.</p>
+            <div style="text-align: center; margin-top: 20px;">
+              <a href="https://e-commerce-o2zc.onrender.com" style="background: #6366f1; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Visit Store</a>
             </div>
-          `,
-        });
+          </div>
+        `,
+      });
+    } catch (error) {
+      console.error(`Email failed for ${user.email}:`, error);
+    }
+
+    // 2. Send WhatsApp (Using Template for API like Ultramsg/Twilio)
+    if (user.phone) {
+      try {
+        // This is a template for WhatsApp API integration
+        // For production, replace with your API Key and Instance ID
+        const WHATSAPP_API_URL = process.env.WHATSAPP_API_URL || ''; 
+        if (WHATSAPP_API_URL) {
+          await axios.post(WHATSAPP_API_URL, {
+            token: process.env.WHATSAPP_TOKEN,
+            to: user.phone,
+            body: `🛍️ *MERN E-Shop Update*\n\n${message}\n\nVisit: https://e-commerce-o2zc.onrender.com`
+          });
+        } else {
+          console.log(`[SIMULATED WHATSAPP] To: ${user.phone}, Msg: ${message}`);
+        }
       } catch (error) {
-        console.error(`Announcement email failed for ${user.email}:`, error);
+        console.error(`WhatsApp failed for ${user.phone}:`, error);
       }
     }
   }
