@@ -5,11 +5,15 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-webpush.setVapidDetails(
-  'mailto:akashs14102005@gmail.com',
-  process.env.VAPID_PUBLIC_KEY,
-  process.env.VAPID_PRIVATE_KEY
-);
+if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
+  webpush.setVapidDetails(
+    'mailto:akashs14102005@gmail.com',
+    process.env.VAPID_PUBLIC_KEY,
+    process.env.VAPID_PRIVATE_KEY
+  );
+} else {
+  console.warn('VAPID keys are not set. Push notifications will not work.');
+}
 
 // @desc    Subscribe to push notifications
 // @route   POST /api/notifications/subscribe
