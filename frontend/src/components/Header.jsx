@@ -52,7 +52,6 @@ const Header = () => {
               Welcome, {userInfo.name}{userInfo.isAdmin ? ' (owner)' : ''}!
             </span>
           )}
-          <SearchBox />
         </div>
 
         <nav>
@@ -101,7 +100,12 @@ const Header = () => {
           </ul>
         </nav>
       </div>
-      <MusicPlayer />
+      <div className="header-bottom">
+        <div className="container header-bottom-container">
+          <SearchBox />
+          <MusicPlayer />
+        </div>
+      </div>
     </header>
   );
 };

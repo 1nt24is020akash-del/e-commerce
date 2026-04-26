@@ -42,7 +42,7 @@ const MusicPlayer = () => {
   };
 
   return (
-    <div className="music-player-bar secondary">
+    <div className="music-player-controls-only">
       <audio ref={audioRef} src="/music/background.mp3" loop autoPlay />
       <div className="music-controls">
         <button onClick={togglePlay} className="music-btn play-btn" title={isPlaying ? 'Pause Music' : 'Play Music'}>

@@ -122,15 +122,29 @@ h1, h2, h3, h4, h5, h6 {
   padding: 3.5rem 0;
 }
 
-/* Music Player */
-.music-player-bar {
-  background: rgba(255, 255, 255, 0.05);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.3rem 2rem;
+/* Header Bottom Bar (Search & Music) */
+.header-bottom {
+  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid var(--card-border);
+  padding: 0.8rem 0;
+  transition: all var(--transition-speed);
+}
+
+.dark-theme .header-bottom {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.header-bottom-container {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  height: 40px;
+  gap: 3rem;
+}
+
+.music-player-controls-only {
+  display: flex;
+  align-items: center;
+  min-width: 300px;
 }
 
 .music-controls {
@@ -609,6 +623,11 @@ header {
   border-color: var(--primary-color);
   background-color: rgba(255, 255, 255, 0.9);
   box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15), inset 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.search-input:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.2) !important;
 }
 
 .form-control:focus + .form-label {
