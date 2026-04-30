@@ -252,6 +252,15 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex: 1;
 }
 
 .logo {
@@ -269,7 +278,7 @@ header {
 
 .nav-links {
   display: flex;
-  gap: 2rem;
+  gap: 1.2rem;
   align-items: center;
 }
 
@@ -321,6 +330,9 @@ header {
   display: flex;
   gap: 1.2rem;
   align-items: center;
+  margin-left: 1rem;
+  border-left: 1px solid var(--card-border);
+  padding-left: 1rem;
 }
 
 .nav-link-admin {
@@ -2365,3 +2377,205 @@ footer {
   70% { transform: scale(1.2); box-shadow: 0 0 0 10px rgba(255, 71, 87, 0); }
   100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
 }
+
+/* Search Box Styles */
+.search-form {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex: 2;
+  max-width: 800px;
+}
+
+.search-input-wrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1.2rem;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.search-input {
+  padding: 1rem 3.5rem 1rem 3.5rem;
+  border-radius: 12px 0 0 12px;
+  border: 2px solid var(--card-border);
+  border-right: none;
+  width: 100%;
+  font-size: 1.1rem;
+  background: var(--card-bg);
+  transition: all 0.3s ease;
+}
+
+.mic-btn {
+  position: absolute;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  z-index: 10;
+}
+
+.btn-search-big {
+  border-radius: 0 12px 12px 0 !important;
+  padding: 1.05rem 2.5rem !important;
+  font-size: 1.1rem !important;
+  background: var(--button-gradient) !important;
+  color: white !important;
+  border: none !important;
+  font-weight: 700 !important;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2);
+}
+
+/* Mobile Media Queries */
+@media (max-width: 768px) {
+  header {
+    padding: 0.5rem 0;
+  }
+
+  .header-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-left {
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  .welcome-msg {
+    display: none;
+  }
+
+  .nav-links {
+    width: 100%;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .nav-link {
+    font-size: 0.85rem;
+  }
+
+  .btn-logout {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .admin-links {
+    display: none;
+  }
+
+  .header-bottom-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .search-form {
+    width: 100%;
+    max-width: none;
+  }
+
+  .search-input {
+    font-size: 1rem;
+    padding: 0.8rem 2.5rem 0.8rem 2.8rem;
+  }
+
+  .search-icon {
+    left: 0.8rem;
+    font-size: 1rem;
+  }
+
+  .mic-btn {
+    right: 0.6rem;
+    font-size: 1rem;
+  }
+
+  .btn-search-big {
+    padding: 0.85rem 1.5rem !important;
+    font-size: 1rem !important;
+  }
+
+  .music-player-controls-only {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .music-controls {
+    gap: 0.8rem;
+  }
+
+  .music-title {
+    font-size: 0.75rem;
+  }
+
+  .volume-slider {
+    width: 60px;
+  }
+
+  .product-title-large {
+    font-size: 1.5rem;
+  }
+
+  .price-tag .amount {
+    font-size: 2rem;
+  }
+
+  .price-tag .currency {
+    font-size: 1.1rem;
+  }
+
+  .delivery-box {
+    padding: 1rem;
+  }
+
+  .filter-section {
+    gap: 0.8rem;
+  }
+
+  .filter-select {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .filter-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .discount-btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    font-size: 1.4rem;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+  }
+
+  .nav-item {
+    font-size: 0.8rem;
+  }
+
+  .btn-search-big {
+    display: none;
+  }
+}
+

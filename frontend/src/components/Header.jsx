@@ -43,7 +43,7 @@ const Header = () => {
   return (
     <header>
       <div className="container header-container">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flex: 1 }}>
+        <div className="header-left">
           <Link to="/" className="logo">
             <span>🛍️</span> MERN E-Shop
           </Link>
@@ -55,7 +55,7 @@ const Header = () => {
         </div>
 
         <nav>
-          <ul className="nav-links" style={{ alignItems: 'center', gap: '1.2rem' }}>
+          <ul className="nav-links">
             <li>
               <Link to="/cart" className="nav-link">
                 <FaShoppingCart /> Cart
@@ -83,7 +83,7 @@ const Header = () => {
             )}
 
             {userInfo && userInfo.isAdmin && (
-              <div className="admin-links" style={{ display: 'flex', gap: '1.2rem', marginLeft: '1rem', borderLeft: '1px solid #eee', paddingLeft: '1rem' }}>
+              <div className="admin-links">
                 <Link to="/admin/productlist" className="nav-link-admin">Products</Link>
                 <Link to="/admin/userlist" className="nav-link-admin">Users</Link>
                 <Link to="/admin/orderlist" className="nav-link-admin">Orders</Link>

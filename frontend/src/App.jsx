@@ -1,4 +1,4 @@
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, Link, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { io } from 'socket.io-client';
@@ -196,6 +196,7 @@ const App = () => {
           </Route>
 
           <Route path="" element={<AdminRoute />}>
+            <Route path="/admin" element={<Navigate to="/admin/productlist" replace />} />
             <Route path="/admin/productlist" element={<ProductListPage />} />
             <Route path="/admin/product/:id/edit" element={<ProductEditPage />} />
             <Route path="/admin/userlist" element={<UserListPage />} />

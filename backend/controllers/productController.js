@@ -35,9 +35,10 @@ const getProducts = asyncHandler(async (req, res) => {
     ...discount 
   }).sort(sort);
 
-  // Default shuffle for "All Items" if no sort is specified
+  // Default sort for "All Items" to show latest products first
   if (!sortOption && (!req.query.category || req.query.category === 'All Items' || req.query.category === 'undefined')) {
-    products = products.sort(() => Math.random() - 0.5);
+    // Optionally we could just let them be, but showing latest first is usually preferred for a "For You" feed
+    products = products.sort((a, b) => b.createdAt - a.createdAt);
   }
 
   res.json(products);
