@@ -119,6 +119,7 @@ const BannerCarousel = () => {
                   loop 
                   muted 
                   playsInline
+                  preload="auto"
                   className="banner-video"
                 />
               ) : (
