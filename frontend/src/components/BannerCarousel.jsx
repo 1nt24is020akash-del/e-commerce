@@ -21,27 +21,34 @@ const BannerCarousel = () => {
     },
     {
       id: 1,
+      type: 'video',
+      video: '/videos/promo2.mp4',
+      title: 'Discover Our New Collection',
+      subtitle: 'Trendy, Stylish, and Affordable'
+    },
+    {
+      id: 2,
       type: 'image',
       image: '/images/offer1.png',
       title: 'Summer Sale',
       subtitle: 'Up to 50% Off'
     },
     {
-      id: 2,
+      id: 3,
       type: 'image',
       image: '/images/offer2.png',
       title: 'Electronics Extravaganza',
       subtitle: 'Best Prices Guaranteed'
     },
     {
-      id: 3,
+      id: 4,
       type: 'image',
       image: '/images/offer3.png',
       title: 'Fresh From Farm',
       subtitle: '20% Off on Groceries'
     },
     {
-      id: 4,
+      id: 5,
       type: 'image',
       image: '/images/offer4.png',
       title: 'New Arrivals',
