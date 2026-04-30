@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, EffectFade } from 'swiper/modules';
 import ReactPlayer from 'react-player';
+import { useGetSettingsQuery } from '../slices/settingsApiSlice';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -10,8 +11,9 @@ import 'swiper/css/effect-fade';
 
 const BannerCarousel = () => {
   const [swiper, setSwiper] = useState(null);
+  const { data: settings } = useGetSettingsQuery();
 
-  const banners = [
+  const defaultBanners = [
     {
       id: 0,
       type: 'video',
@@ -55,6 +57,15 @@ const BannerCarousel = () => {
       subtitle: 'Elevate Your Style'
     }
   ];
+
+  const banners = settings?.banners?.length > 0 ? settings.banners.map((b, i) => ({
+      id: i,
+      type: b.type,
+      video: b.type === 'video' ? b.url : undefined,
+      image: b.type === 'image' ? b.url : undefined,
+      title: b.title,
+      subtitle: b.subtitle,
+  })) : defaultBanners;
 
   const handleVideoEnd = () => {
     if (swiper) {

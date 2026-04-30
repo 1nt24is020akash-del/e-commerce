@@ -1,13 +1,17 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FaPlay, FaPause, FaVolumeUp, FaVolumeMute } from 'react-icons/fa';
+import { useGetSettingsQuery } from '../slices/settingsApiSlice';
 
 const MusicPlayer = () => {
+  const { data: settings } = useGetSettingsQuery();
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
   const [volume, setVolume] = useState(0.5);
   const audioRef = useRef(null);
 
-  React.useEffect(() => {
+  const musicUrl = settings?.music || "/music/background.mp3";
+
+  useEffect(() => {
     if (audioRef.current) {
       audioRef.current.play().catch(error => {
         console.log("Autoplay blocked by browser. User interaction required.");
@@ -41,9 +45,11 @@ const MusicPlayer = () => {
     }
   };
 
+  if (!settings && !musicUrl) return null;
+
   return (
     <div className="music-player-controls-only">
-      <audio ref={audioRef} src="/music/background.mp3" loop autoPlay />
+      <audio ref={audioRef} src={musicUrl} loop autoPlay />
       <div className="music-controls">
         <button onClick={togglePlay} className="music-btn play-btn" title={isPlaying ? 'Pause Music' : 'Play Music'}>
           {isPlaying ? <FaPause /> : <FaPlay />}

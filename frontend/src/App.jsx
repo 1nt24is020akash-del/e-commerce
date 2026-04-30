@@ -28,6 +28,7 @@ import OrderListPage from './pages/admin/OrderListPage';
 import SupportListPage from './pages/admin/SupportListPage';
 import AdminChatPage from './pages/admin/AdminChatPage';
 import AdminNotificationPage from './pages/admin/AdminNotificationPage';
+import AdminMediaPage from './pages/admin/AdminMediaPage';
 
 import { useSubscribeMutation } from './slices/notificationsApiSlice';
 
@@ -203,6 +204,7 @@ const App = () => {
             <Route path="/admin/orderlist" element={<OrderListPage />} />
             <Route path="/admin/supportlist" element={<SupportListPage />} />
             <Route path="/admin/notifications" element={<AdminNotificationPage />} />
+            <Route path="/admin/media" element={<AdminMediaPage />} />
             <Route path="/chat" element={<AdminChatPage />} />
           </Route>
         </Routes>

@@ -17,14 +17,14 @@ const storage = multer.diskStorage({
 });
 
 function checkFileType(file, cb) {
-  const filetypes = /jpg|jpeg|png/;
+  const filetypes = /jpg|jpeg|png|webp|mp4|webm|mp3|wav|m4a|gif/;
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = filetypes.test(file.mimetype);
 
   if (extname && mimetype) {
     return cb(null, true);
   } else {
-    cb('Images only!');
+    cb('Images, Videos and Audio only!');
   }
 }
 
@@ -36,6 +36,13 @@ router.post('/', upload.single('image'), (req, res) => {
   res.send({
     message: 'Image uploaded',
     image: `/${req.file.path.replace(/\\/g, '/')}`,
+  });
+});
+
+router.post('/media', upload.single('media'), (req, res) => {
+  res.send({
+    message: 'Media uploaded',
+    url: `/${req.file.path.replace(/\\/g, '/')}`,
   });
 });
 
