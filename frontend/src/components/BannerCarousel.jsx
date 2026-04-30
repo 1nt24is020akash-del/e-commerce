@@ -14,8 +14,8 @@ const BannerCarousel = () => {
   const banners = [
     {
       id: 0,
-      type: 'youtube',
-      video: 'https://www.youtube.com/watch?v=cNOKQIw81SE',
+      type: 'video',
+      video: '/videos/promo.mp4',
       title: 'Experience Modern Shopping',
       subtitle: 'Fast, Reliable, and Premium'
     },
