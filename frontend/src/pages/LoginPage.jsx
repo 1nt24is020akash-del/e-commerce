@@ -10,6 +10,23 @@ const LoginPage = () => {
 
   const [strength, setStrength] = useState(0);
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [login, { isLoading, error }] = useLoginMutation();
+
+  const { userInfo } = useSelector((state) => state.auth);
+
+  const { search } = useLocation();
+  const sp = new URLSearchParams(search);
+  const redirect = sp.get('redirect') || '/';
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate(redirect);
+    }
+  }, [userInfo, redirect, navigate]);
+
   const calculateStrength = (pass) => {
     let s = 0;
     if (pass.length > 5) s++;
