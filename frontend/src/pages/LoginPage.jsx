@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLoginMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
+import OAuth from '../components/OAuth';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -113,6 +114,13 @@ const LoginPage = () => {
         <button type="submit" className="btn btn-primary btn-block" disabled={isLoading} style={{marginTop: '1.5rem'}}>
           {isLoading ? 'Signing In...' : 'Sign In'}
         </button>
+
+        <div className="divider" style={{ margin: '1.5rem 0', textAlign: 'center', position: 'relative' }}>
+          <span style={{ background: 'var(--card-bg)', padding: '0 10px', color: 'rgba(255,255,255,0.5)', fontSize: '0.8rem' }}>OR</span>
+          <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '1px', background: 'rgba(255,255,255,0.1)', zIndex: -1 }}></div>
+        </div>
+
+        <OAuth />
       </form>
 
       <div style={{ marginTop: '2rem', textAlign: 'center', fontSize: '0.95rem' }}>

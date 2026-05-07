@@ -202,4 +202,42 @@ const sendEmailToUsers = asyncHandler(async (req, res) => {
   }
 });
 
-export { authUser, registerUser, logoutUser, getUserProfile, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, sendEmailToUsers };
+// @desc    Auth user with Google
+const googleAuth = asyncHandler(async (req, res) => {
+  const { name, email } = req.body;
+  const user = await User.findOne({ email });
+
+  if (user) {
+    generateToken(res, user._id);
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      phone: user.phone,
+    });
+  } else {
+    const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+    const newUser = await User.create({
+      name,
+      email,
+      password: generatedPassword,
+    });
+
+    if (newUser) {
+      generateToken(res, newUser._id);
+      res.status(201).json({
+        _id: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+        isAdmin: newUser.isAdmin,
+        phone: newUser.phone,
+      });
+    } else {
+      res.status(400);
+      throw new Error('Invalid user data');
+    }
+  }
+});
+
+export { authUser, registerUser, logoutUser, getUserProfile, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, sendEmailToUsers, googleAuth };

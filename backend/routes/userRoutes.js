@@ -10,6 +10,7 @@ import {
   getUserById,
   updateUser,
   sendEmailToUsers,
+  googleAuth,
 } from '../controllers/userController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
@@ -18,6 +19,7 @@ const router = express.Router();
 router.route('/').post(registerUser).get(protect, admin, getUsers);
 router.post('/logout', logoutUser);
 router.post('/login', authUser);
+router.post('/google', googleAuth);
 router.post('/broadcast', protect, admin, sendEmailToUsers);
 router
   .route('/profile')
