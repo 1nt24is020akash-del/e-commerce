@@ -9,12 +9,17 @@ import { FcGoogle } from 'react-icons/fc';
 import { toast } from 'react-hot-toast';
 
 const OAuth = () => {
-  const auth = getAuth(app);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [googleAuth] = useGoogleMutation();
 
   const handleGoogleClick = async () => {
+    if (!app) {
+      toast.error('Firebase is not initialized. Please check your configuration.');
+      return;
+    }
+    
+    const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({ prompt: 'select_account' });
     try {

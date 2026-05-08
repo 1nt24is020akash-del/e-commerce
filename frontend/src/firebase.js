@@ -13,5 +13,15 @@ const firebaseConfig = {
   appId: "1:597818451731:web:8c5b36768e734005b5b4e7"
 };
 
-// Initialize Firebase
-export const app = initializeApp(firebaseConfig);
+// Initialize Firebase with a safety check
+let app;
+try {
+  if (!firebaseConfig.apiKey) {
+    console.warn('Firebase API Key is missing! Google Auth will not work.');
+  }
+  app = initializeApp(firebaseConfig);
+} catch (error) {
+  console.error('Firebase initialization failed:', error);
+}
+
+export { app };
