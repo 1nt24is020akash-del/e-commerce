@@ -55,9 +55,7 @@ const App = () => {
       const registerServiceWorker = async () => {
         try {
           const registration = await navigator.serviceWorker.register('/sw.js');
-          console.log('Service Worker registered');
-
-          // Only subscribe if user is logged in
+          
           if (userInfo) {
             let subscription = await registration.pushManager.getSubscription();
             if (!subscription) {
@@ -67,23 +65,20 @@ const App = () => {
                 applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
               });
               await subscribe(subscription).unwrap();
-              console.log('Push subscription successful');
             } else {
-              // Update subscription in case user changed
               await subscribe(subscription).unwrap();
             }
           }
         } catch (error) {
-          console.error('Service Worker registration/subscription failed:', error);
+          console.error('Service Worker error:', error);
         }
       };
       registerServiceWorker();
     }
 
     socket.on('newAnnouncement', (data) => {
-      // Play notification sound
       const audio = new Audio('/sounds/notification.mp3');
-      audio.play().catch(e => console.log('Audio play failed'));
+      audio.play().catch(() => {});
 
       toast.success(data.message, {
         duration: 5000,
@@ -95,83 +90,51 @@ const App = () => {
           fontWeight: 'bold',
           borderRadius: '20px',
           padding: '24px 40px',
-          fontSize: '1.4rem',
+          fontSize: '1.2rem',
           boxShadow: '0 15px 35px rgba(0,0,0,0.3)',
-          border: '2px solid rgba(255,255,255,0.2)',
-          maxWidth: '800px',
-          animation: 'announcementPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
         }
       });
     });
 
-    if (userInfo && userInfo.isAdmin) {
+    if (userInfo?.isAdmin) {
       socket.on('paymentNotification', (data) => {
         toast((t) => (
           <span style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <strong>💰 New PhonePe Payment!</strong>
-            <span>User <b>{data.userName}</b> reported a payment of <b>₹{data.amount}</b>.</span>
-            <Link 
-              to={`/order/${data.orderId}`} 
-              onClick={() => toast.dismiss(t.id)}
-              style={{ color: 'var(--primary-color)', fontWeight: 'bold', textDecoration: 'underline' }}
-            >
-              View Order Details
+            <strong>💰 New Payment!</strong>
+            <span>User <b>{data.userName}</b> paid <b>₹{data.amount}</b>.</span>
+            <Link to={`/order/${data.orderId}`} onClick={() => toast.dismiss(t.id)} style={{ color: 'var(--primary-color)', fontWeight: 'bold' }}>
+              View Order
             </Link>
           </span>
-        ), {
-          duration: 10000,
-          position: 'top-right',
-          style: {
-            background: '#fff',
-            color: '#333',
-            border: '2px solid var(--success-color)',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-            padding: '16px',
-          },
-        });
+        ), { duration: 10000, position: 'top-right' });
         
-        // Play a notification sound if possible
         const audio = new Audio('/sounds/notification.mp3');
-        audio.play().catch(e => console.log('Audio play failed'));
+        audio.play().catch(() => {});
       });
 
       socket.on('newOrderNotification', (data) => {
         toast((t) => (
           <span style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <strong>📦 New Order Placed!</strong>
-            <span>User <b>{data.userName}</b> just placed a new order for <b>₹{data.totalPrice}</b>.</span>
-            <Link 
-              to={`/order/${data.orderId}`} 
-              onClick={() => toast.dismiss(t.id)}
-              style={{ color: '#4f46e5', fontWeight: 'bold', textDecoration: 'underline' }}
-            >
+            <strong>📦 New Order!</strong>
+            <span>User <b>{data.userName}</b> ordered for <b>₹{data.totalPrice}</b>.</span>
+            <Link to={`/order/${data.orderId}`} onClick={() => toast.dismiss(t.id)} style={{ color: '#4f46e5', fontWeight: 'bold' }}>
               View Order
             </Link>
           </span>
-        ), {
-          duration: 10000,
-          position: 'top-right',
-          style: {
-            background: '#fff',
-            color: '#333',
-            border: '2px solid #4f46e5',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-            padding: '16px',
-          },
-        });
+        ), { duration: 10000, position: 'top-right' });
         
         const audio = new Audio('/sounds/notification.mp3');
-        audio.play().catch(e => console.log('Audio play failed'));
+        audio.play().catch(() => {});
       });
-
-      return () => {
-        socket.off('newAnnouncement');
-        socket.off('paymentNotification');
-        socket.off('newOrderNotification');
-        socket.disconnect();
-      };
     }
-  }, [userInfo]);
+
+    return () => {
+      socket.off('newAnnouncement');
+      socket.off('paymentNotification');
+      socket.off('newOrderNotification');
+      socket.disconnect();
+    };
+  }, [userInfo, subscribe]);
 
   return (
     <>

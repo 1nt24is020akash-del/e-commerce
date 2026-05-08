@@ -4,9 +4,17 @@ const addDecimals = (num) => {
   return (Math.round(num * 100) / 100).toFixed(2);
 };
 
-const initialState = localStorage.getItem('cart')
-  ? JSON.parse(localStorage.getItem('cart'))
-  : { cartItems: [], shippingAddress: {}, paymentMethod: 'Razorpay', coupon: null, discountAmount: 0 };
+const getInitialCartState = () => {
+  try {
+    const cart = localStorage.getItem('cart');
+    return cart ? JSON.parse(cart) : { cartItems: [], shippingAddress: {}, paymentMethod: 'Razorpay', coupon: null, discountAmount: 0 };
+  } catch (error) {
+    console.error('Failed to parse cart from localStorage:', error);
+    return { cartItems: [], shippingAddress: {}, paymentMethod: 'Razorpay', coupon: null, discountAmount: 0 };
+  }
+};
+
+const initialState = getInitialCartState();
 
 const cartSlice = createSlice({
   name: 'cart',
