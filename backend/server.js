@@ -26,6 +26,12 @@ import coupons from './data/coupons.js';
 
 dotenv.config();
 
+if (!process.env.MONGO_URI) {
+  console.error('CRITICAL ERROR: MONGO_URI is not defined in environment variables.');
+  // We'll still try to connect so the error from mongoose is logged, 
+  // but we provide a clear warning first.
+}
+
 connectDB();
 
 const app = express();
@@ -128,19 +134,21 @@ app.get('/api/config/razorpay', (req, res) => res.send({ clientId: process.env.R
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')));
 
-const distPath = path.join(__dirname, '../frontend/dist');
+const distPath = path.resolve(__dirname, '..', 'frontend', 'dist');
 console.log('Serving static files from:', distPath);
 app.use(express.static(distPath));
 
 app.get('*', (req, res) => {
-  const indexPath = path.join(distPath, 'index.html');
-  console.log('Serving index.html from:', indexPath);
+  const indexPath = path.resolve(distPath, 'index.html');
+  console.log('Request for:', req.url, '| Serving index.html from:', indexPath);
   res.sendFile(indexPath, (err) => {
     if (err) {
-      console.error('Error sending index.html:', err);
-      res.status(500).send(err);
+      console.error('Error sending index.html:', err.message);
+      if (!res.headersSent) {
+        res.status(404).send('Frontend build not found. Please ensure the build command succeeded.');
+      }
     }
   });
 });
