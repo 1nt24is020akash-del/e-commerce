@@ -130,11 +130,20 @@ const __dirname = path.dirname(__filename);
 
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
-app.use(express.static(path.join(__dirname, '../frontend/dist')));
+const distPath = path.join(__dirname, '../frontend/dist');
+console.log('Serving static files from:', distPath);
+app.use(express.static(distPath));
 
-app.get(/.*/, (req, res) =>
-  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'))
-);
+app.get('*', (req, res) => {
+  const indexPath = path.join(distPath, 'index.html');
+  console.log('Serving index.html from:', indexPath);
+  res.sendFile(indexPath, (err) => {
+    if (err) {
+      console.error('Error sending index.html:', err);
+      res.status(500).send(err);
+    }
+  });
+});
 
 app.use(notFound);
 app.use(errorHandler);
