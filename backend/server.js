@@ -6,6 +6,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import mongoose from 'mongoose';
 import connectDB from './config/db.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import productRoutes from './routes/productRoutes.js';
@@ -28,11 +29,7 @@ dotenv.config();
 
 if (!process.env.MONGO_URI) {
   console.error('CRITICAL ERROR: MONGO_URI is not defined in environment variables.');
-  // We'll still try to connect so the error from mongoose is logged, 
-  // but we provide a clear warning first.
 }
-
-connectDB();
 
 const app = express();
 const server = http.createServer(app);
@@ -68,6 +65,16 @@ app.use('/api/chat', chatRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/settings', settingsRoutes);
+
+app.get('/api/health', (req, res) => {
+  const dbStatus = mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected';
+  res.json({
+    status: 'Server is running',
+    database: dbStatus,
+    env: process.env.NODE_ENV,
+    time: new Date().toISOString()
+  });
+});
 
 app.get('/api/cleanup', async (req, res) => {
   try {
@@ -156,8 +163,17 @@ app.get('*', (req, res) => {
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
+const startServer = async () => {
+  try {
+    await connectDB();
+    const PORT = process.env.PORT || 5000;
+    server.listen(PORT, () => {
+      console.log(`🚀 Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error(`Error starting server: ${error.message}`);
+    process.exit(1);
+  }
+};
 
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+startServer();

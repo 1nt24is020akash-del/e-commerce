@@ -27,56 +27,63 @@ const authUser = asyncHandler(async (req, res) => {
 // @desc    Register a new user
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password, phone } = req.body;
+  console.log(`[Register] Request received for: ${email}`);
+  
+  console.log('[Register] Checking if user exists in DB...');
   const userExists = await User.findOne({ email });
 
   if (userExists) {
+    console.log('[Register] User already exists');
     res.status(400);
-    throw new Error('User already exists');
+    return res.json({ message: 'User already exists' });
   }
 
+  console.log('[Register] Attempting to create user (triggers bcrypt hook)...');
   const user = await User.create({ name, email, password, phone });
 
   if (user) {
+    console.log(`[Register] User created successfully: ${user._id}`);
+    
     // Create Welcome Coupon if it doesn't exist
-    const welcomeCoupon = await Coupon.findOne({ code: 'WELCOME20' });
-    if (!welcomeCoupon) {
-      await Coupon.create({
-        code: 'WELCOME20',
-        discountPercentage: 20,
-        isFirstUserOnly: true,
-        isActive: true,
-        expiryDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)), // 1 year expiry
-      });
-    }
-
-    // Send Welcome Email
     try {
-      await sendEmail({
-        email: user.email,
-        subject: 'Welcome to MERN E-Shop!',
-        message: `
-          <h1>Welcome, ${user.name}!</h1>
-          <p>We're thrilled to have you join our community at <strong>MERN E-Shop</strong>.</p>
-          <p>Explore our wide range of products from Fresh Groceries to the Latest Electronics.</p>
-          <div style="background: #f4f4f4; padding: 20px; border-radius: 10px; margin: 20px 0; text-align: center;">
-            <h2>Your Welcome Gift</h2>
-            <p>Use the coupon code below for <strong>20% OFF</strong> on your first order!</p>
-            <h1 style="color: #6366f1; letter-spacing: 5px;">WELCOME20</h1>
-          </div>
-          <p>Happy Shopping!</p>
-          <p>Best Regards,<br>The MERN E-Shop Team</p>
-        `,
-      });
-    } catch (emailError) {
-      console.error('Email sending failed:', emailError);
-      // Don't throw error here to allow user registration to succeed
+      console.log('[Register] Checking for Welcome Coupon...');
+      const welcomeCoupon = await Coupon.findOne({ code: 'WELCOME20' });
+      if (!welcomeCoupon) {
+        console.log('[Register] Creating new WELCOME20 coupon...');
+        await Coupon.create({
+          code: 'WELCOME20',
+          discountPercentage: 20,
+          isFirstUserOnly: true,
+          isActive: true,
+          expiryDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
+        });
+      }
+    } catch (couponErr) {
+      console.error('[Register] Coupon operation failed (ignoring):', couponErr.message);
     }
 
+    // Send Welcome Email (NON-BLOCKING)
+    console.log('[Register] Triggering background welcome email...');
+    sendEmail({
+      email: user.email,
+      subject: 'Welcome to MERN E-Shop!',
+      message: `<h1>Welcome, ${user.name}!</h1><p>Happy Shopping!</p>`,
+    }).catch(emailError => console.error('[Register] Email sending failed:', emailError));
+
+    console.log('[Register] Sending final success response');
     generateToken(res, user._id);
-    res.status(201).json({ _id: user._id, name: user.name, email: user.email, isAdmin: user.isAdmin, phone: user.phone });
+    return res.status(201).json({ 
+      _id: user._id, 
+      name: user.name, 
+      email: user.email, 
+      isAdmin: user.isAdmin, 
+      phone: user.phone,
+      success: true 
+    });
   } else {
+    console.log('[Register] User creation failed (returned null)');
     res.status(400);
-    throw new Error('Invalid user data');
+    return res.json({ message: 'Invalid user data' });
   }
 });
 
@@ -204,10 +211,14 @@ const sendEmailToUsers = asyncHandler(async (req, res) => {
 
 // @desc    Auth user with Google
 const googleAuth = asyncHandler(async (req, res) => {
+  console.log('Google Auth request received:', req.body.email);
   const { name, email } = req.body;
+  
+  console.log('Finding user by email...');
   const user = await User.findOne({ email });
 
   if (user) {
+    console.log('User found, generating token...');
     generateToken(res, user._id);
     res.json({
       _id: user._id,
@@ -217,6 +228,7 @@ const googleAuth = asyncHandler(async (req, res) => {
       phone: user.phone,
     });
   } else {
+    console.log('User not found, creating new user...');
     const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
     const newUser = await User.create({
       name,
@@ -225,6 +237,7 @@ const googleAuth = asyncHandler(async (req, res) => {
     });
 
     if (newUser) {
+      console.log('New Google user created:', newUser._id);
       generateToken(res, newUser._id);
       res.status(201).json({
         _id: newUser._id,
@@ -234,6 +247,7 @@ const googleAuth = asyncHandler(async (req, res) => {
         phone: newUser.phone,
       });
     } else {
+      console.log('Invalid Google user data');
       res.status(400);
       throw new Error('Invalid user data');
     }
